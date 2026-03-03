@@ -17,10 +17,17 @@ namespace UniverseEngine {
 
 		while (m_Running)
 		{
-			m_Running = false;
+			WindowCloseEvent e;
+			OnEvent(e);
 		}
 
 		Shutdown();
+	}
+
+	void Application::OnEvent(Event& e)
+	{
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<WindowCloseEvent>(UE_BIND_EVENT_FN(Application::OnWindowClose));
 	}
 
 	void Application::Initialise()
@@ -30,6 +37,12 @@ namespace UniverseEngine {
 
 	void Application::Shutdown()
 	{
+	}
+
+	bool Application::OnWindowClose(WindowCloseEvent& e)
+	{
+		m_Running = false;
+		return true;
 	}
 
 }

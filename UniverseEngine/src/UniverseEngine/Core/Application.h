@@ -1,5 +1,7 @@
 #pragma once
 
+#include "UniverseEngine/Core/Events/ApplicationEvents.h"
+
 namespace UniverseEngine {
 
 	class Application
@@ -9,9 +11,13 @@ namespace UniverseEngine {
 		virtual ~Application();
 
 		void Run();
+
+		void OnEvent(Event& e);
 	private:
 		void Initialise();
 		void Shutdown();
+
+		bool OnWindowClose(WindowCloseEvent& e);
 	private:
 		bool m_Running = false;
 	};

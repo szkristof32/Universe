@@ -46,7 +46,7 @@ namespace UniverseEngine {
 		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
 		{
 			WindowCloseEvent e;
-			Application::Get().OnEvent(e);
+			Application::Get()->OnEvent(e);
 		});
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int32_t width, int32_t height)
 		{
@@ -55,7 +55,7 @@ namespace UniverseEngine {
 			windowData.Height = height;
 
 			WindowResizeEvent e(width, height);
-			Application::Get().OnEvent(e);
+			Application::Get()->OnEvent(e);
 		});
 		glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int32_t key, int32_t scancode, int32_t action, int32_t mods)
 		{
@@ -64,19 +64,19 @@ namespace UniverseEngine {
 				case GLFW_PRESS:
 				{
 					KeyPressEvent e(key);
-					Application::Get().OnEvent(e);
+					Application::Get()->OnEvent(e);
 					break;
 				}
 				case GLFW_RELEASE:
 				{
 					KeyReleaseEvent e(key);
-					Application::Get().OnEvent(e);
+					Application::Get()->OnEvent(e);
 					break;
 				}
 				case GLFW_REPEAT:
 				{
 					KeyPressEvent e(key, true);
-					Application::Get().OnEvent(e);
+					Application::Get()->OnEvent(e);
 					break;
 				}
 			}
@@ -84,12 +84,12 @@ namespace UniverseEngine {
 		glfwSetCharCallback(m_Window, [](GLFWwindow* window, uint32_t scancode)
 		{
 			KeyPressEvent e(scancode);
-			Application::Get().OnEvent(e);
+			Application::Get()->OnEvent(e);
 		});
 		glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xpos, double ypos)
 		{
 			MouseMoveEvent e(static_cast<float>(xpos), static_cast<float>(ypos));
-			Application::Get().OnEvent(e);
+			Application::Get()->OnEvent(e);
 		});
 		glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int32_t button, int32_t action, int32_t mods)
 		{
@@ -98,13 +98,13 @@ namespace UniverseEngine {
 				case GLFW_PRESS:
 				{
 					MouseButtonPressEvent e(button);
-					Application::Get().OnEvent(e);
+					Application::Get()->OnEvent(e);
 					break;
 				}
 				case GLFW_RELEASE:
 				{
 					MouseButtonReleaseEvent e(button);
-					Application::Get().OnEvent(e);
+					Application::Get()->OnEvent(e);
 					break;
 				}
 			}
@@ -112,7 +112,7 @@ namespace UniverseEngine {
 		glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xoffset, double yoffset)
 		{
 			MouseScrollEvent e(static_cast<float>(xoffset), static_cast<float>(yoffset));
-			Application::Get().OnEvent(e);
+			Application::Get()->OnEvent(e);
 		});
 	}
 

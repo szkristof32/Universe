@@ -26,4 +26,6 @@
 #include <vector>
 
 #include "UniverseEngine/Core/Base.h"
+#include "UniverseEngine/Core/Reference.h"
+
 #include "UniverseEngine/Core/Events/Event.h"

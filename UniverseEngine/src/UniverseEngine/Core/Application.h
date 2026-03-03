@@ -2,6 +2,8 @@
 
 #include "UniverseEngine/Core/Window.h"
 
+#include "UniverseEngine/Renderer/Renderer.h"
+
 #include "UniverseEngine/Core/Events/ApplicationEvents.h"
 
 #include <memory>
@@ -18,7 +20,9 @@ namespace UniverseEngine {
 
 		void OnEvent(Event& e);
 
-		static Application& Get();
+		static Reference<Application> Get();
+
+		Reference<Window> GetWindow() const { return m_Window; }
 	private:
 		void Initialise();
 		void Shutdown();
@@ -26,6 +30,7 @@ namespace UniverseEngine {
 		bool OnWindowClose(WindowCloseEvent& e);
 	private:
 		std::unique_ptr<Window> m_Window;
+		std::unique_ptr<Renderer> m_Renderer;
 
 		bool m_Running = false;
 	};

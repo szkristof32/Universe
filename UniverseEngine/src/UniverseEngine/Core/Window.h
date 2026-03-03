@@ -13,6 +13,10 @@ namespace UniverseEngine {
 		~Window();
 
 		void Update();
+
+		GLFWwindow* GetWindowHandle() const { return m_Window; }
+		uint32_t GetWidth() const { return m_Data.Width; }
+		uint32_t GetHeight() const { return m_Data.Height; }
 	private:
 		GLFWwindow* m_Window;
 

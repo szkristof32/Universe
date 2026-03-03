@@ -11,6 +11,7 @@ namespace UniverseEngine {
 		s_Application = this;
 
 		m_Window = std::make_unique<Window>(1280, 720, "UniverseEngine");
+		m_Renderer = std::make_unique<Renderer>();
 	}
 
 	Application::~Application()
@@ -24,6 +25,9 @@ namespace UniverseEngine {
 		while (m_Running)
 		{
 			m_Window->Update();
+
+			m_Renderer->BeginFrame();
+			m_Renderer->EndFrame();
 		}
 
 		Shutdown();
@@ -50,9 +54,9 @@ namespace UniverseEngine {
 		return true;
 	}
 
-	Application& Application::Get()
+	Reference<Application> Application::Get()
 	{
-		return *s_Application;
+		return s_Application;
 	}
 
 }

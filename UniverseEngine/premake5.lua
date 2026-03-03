@@ -16,7 +16,8 @@ project "UniverseEngine"
 	includedirs
 	{
 		"src",
-		"vendor/glfw/include"
+		"vendor/glfw/include",
+		"vendor/glad/include",
 	}
 
 	defines

@@ -1,13 +1,18 @@
 #pragma once
 
-#include "pch.h"
 #include "UniverseEngine/Core/Core.h"
+#include "UniverseEngine/Core/Application.h"
 
 namespace UniverseEngine {
+
+	extern Application* CreateApplication(int argc, char** argv);
 
 	int Main(int argc, char** argv)
 	{
 		Core::Initialise();
+		auto app = CreateApplication(argc, argv);
+		app->Run();
+		delete app;
 		Core::Shutdown();
 		return 0;
 	}

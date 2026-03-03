@@ -45,20 +45,20 @@ namespace UniverseEngine {
 		UE_EVENT_TYPE(KeyRelease);
 	};
 
-	class KeyTypeEvent : public KeyEvent
+	class KeyTypeEvent : public Event
 	{
 	public:
-		KeyTypeEvent(uint32_t keyCode, bool repeat = false)
-			: KeyEvent(keyCode), m_Repeat(repeat)
+		KeyTypeEvent(uint32_t scancode)
+			: m_Scancode(scancode)
 		{
 		}
 
-		char GetTypedCharacter() const { return (char)m_KeyCode; }
-		bool DoesRepeat() const { return m_Repeat; }
+		uint32_t GetScancode() const { return m_Scancode; }
 
 		UE_EVENT_TYPE(KeyType);
+		UE_EVENT_CATEGORY(EventCategory::Keyboard);
 	private:
-		bool m_Repeat;
+		uint32_t m_Scancode;
 	};
 
 }

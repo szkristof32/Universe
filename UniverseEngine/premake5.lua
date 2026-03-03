@@ -15,5 +15,21 @@ project "UniverseEngine"
 
 	includedirs
 	{
-		"src"
+		"src",
+		"vendor/glfw/include"
+	}
+
+	defines
+	{
+		"GLFW_INCLUDE_NONE"
+	}
+
+	links
+	{
+		"glfw3"
+	}
+
+	libdirs
+	{
+		"vendor/glfw/lib"
 	}

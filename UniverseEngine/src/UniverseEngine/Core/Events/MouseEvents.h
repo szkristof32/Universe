@@ -7,19 +7,19 @@ namespace UniverseEngine {
 	class MouseMoveEvent : public Event
 	{
 	public:
-		MouseMoveEvent(uint32_t x, uint32_t y)
+		MouseMoveEvent(float x, float y)
 			: m_XPos(x), m_YPos(y)
 		{
 		}
 
-		uint32_t GetX() const { return m_XPos; }
-		uint32_t GetY() const { return m_YPos; }
+		float GetX() const { return m_XPos; }
+		float GetY() const { return m_YPos; }
 
 		UE_EVENT_TYPE(MouseMove);
 		UE_EVENT_CATEGORY(EventCategory::Mouse);
 	private:
-		uint32_t m_XPos;
-		uint32_t m_YPos;
+		float m_XPos;
+		float m_YPos;
 	};
 
 	class MouseButtonEvent : public Event
@@ -57,6 +57,24 @@ namespace UniverseEngine {
 		}
 
 		UE_EVENT_TYPE(MouseButtonRelease);
+	};
+
+	class MouseScrollEvent : public Event
+	{
+	public:
+		MouseScrollEvent(float offsetX, float offsetY)
+			: m_OffsetX(offsetX), m_OffsetY(offsetY)
+		{
+		}
+
+		float GetOffsetX() const { return m_OffsetX; }
+		float GetOffsetY() const { return m_OffsetY; }
+
+		UE_EVENT_TYPE(MouseScroll);
+		UE_EVENT_CATEGORY(EventCategory::Mouse);
+	private:
+		float m_OffsetX;
+		float m_OffsetY;
 	};
 
 }

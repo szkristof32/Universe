@@ -3,8 +3,14 @@
 
 namespace UniverseEngine {
 
+	static Application* s_Application = nullptr;
+
 	Application::Application()
 	{
+		assert(!s_Application && "You can only create one Application instance!");
+		s_Application = this;
+
+		m_Window = std::make_unique<Window>(1280, 720, "UniverseEngine");
 	}
 
 	Application::~Application()
@@ -17,8 +23,7 @@ namespace UniverseEngine {
 
 		while (m_Running)
 		{
-			WindowCloseEvent e;
-			OnEvent(e);
+			m_Window->Update();
 		}
 
 		Shutdown();
@@ -43,6 +48,11 @@ namespace UniverseEngine {
 	{
 		m_Running = false;
 		return true;
+	}
+
+	Application& Application::Get()
+	{
+		return *s_Application;
 	}
 
 }

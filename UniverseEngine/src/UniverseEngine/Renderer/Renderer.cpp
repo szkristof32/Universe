@@ -5,7 +5,7 @@ namespace UniverseEngine {
 
 	Renderer::Renderer()
 	{
-		m_Context = std::make_unique<Context>();
+		m_Context = MakeUnique<Context>();
 	}
 
 	Renderer::~Renderer()

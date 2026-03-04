@@ -16,8 +16,6 @@ project "UniverseEngine"
 	includedirs
 	{
 		"src",
-		"vendor/glfw/include",
-		"vendor/glad/include",
 	}
 
 	defines
@@ -25,12 +23,5 @@ project "UniverseEngine"
 		"GLFW_INCLUDE_NONE"
 	}
 
-	links
-	{
-		"glfw3"
-	}
-
-	libdirs
-	{
-		"vendor/glfw/lib"
-	}
+	ProcessDependencies()
+	

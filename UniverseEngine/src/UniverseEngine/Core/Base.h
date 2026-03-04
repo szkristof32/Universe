@@ -10,6 +10,12 @@ namespace UniverseEngine {
 		return 1 << x;
 	}
 
+	template<typename _Ty, typename... _Args>
+	constexpr std::unique_ptr<_Ty> MakeUnique(_Args&&... args)
+	{
+		return std::unique_ptr<_Ty>(new _Ty(std::forward<_Args>(args)...));
+	}
+
 }
 
 namespace UE = UniverseEngine;

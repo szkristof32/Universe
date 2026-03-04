@@ -38,5 +38,7 @@ workspace "Universe"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+include "Dependencies.lua"
+
 include "UniverseEngine"
 include "Simulation"

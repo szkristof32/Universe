@@ -21,5 +21,7 @@ project "Simulation"
 		"UniverseEngine"
 	}
 
+	ProcessDependencies()
+
 	filter "configurations:Release"
 		kind "WindowedApp"

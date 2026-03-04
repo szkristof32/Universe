@@ -10,8 +10,8 @@ namespace UniverseEngine {
 		assert(!s_Application && "You can only create one Application instance!");
 		s_Application = this;
 
-		m_Window = std::make_unique<Window>(1280, 720, "UniverseEngine");
-		m_Renderer = std::make_unique<Renderer>();
+		m_Window = MakeUnique<Window>(1280, 720, "UniverseEngine");
+		m_Renderer = MakeUnique<Renderer>();
 	}
 
 	Application::~Application()

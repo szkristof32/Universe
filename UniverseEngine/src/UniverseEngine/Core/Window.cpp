@@ -22,8 +22,8 @@ namespace UniverseEngine {
 		assert(glfwInit() && "Failed to initialise GLFW!");
 
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #ifdef UE_DEBUG
 		glfwWindowHint(GLFW_CONTEXT_DEBUG, GLFW_TRUE);

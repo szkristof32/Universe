@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Shader.h"
 
+#include "UniverseEngine/Utils/FileUtils.h"
+
 #include <glad/gl.h>
 
 namespace UniverseEngine {
@@ -53,6 +55,16 @@ namespace UniverseEngine {
 		glCompileShader(shader);
 		glAttachShader(m_Program, shader);
 		glLinkProgram(m_Program);
+	}
+
+	void Shader::LoadFromDisk(const std::string& name)
+	{
+		static std::string shaderFolder = "Resources/Shaders/";
+		std::string vertexPath = shaderFolder + name + ".vert";
+		std::string fragmentPath = shaderFolder + name + ".frag";
+
+		AttachStage(ShaderStage::Vertex, FileUtils::ReadFile(vertexPath));
+		AttachStage(ShaderStage::Fragment, FileUtils::ReadFile(fragmentPath));
 	}
 
 }

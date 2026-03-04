@@ -18,6 +18,7 @@ namespace UniverseEngine {
 		void Bind();
 
 		void AttachStage(ShaderStage stage, const std::string& source);
+		void LoadFromDisk(const std::string& name);
 	private:
 		uint32_t m_Program;
 		std::vector<uint32_t> m_Stages;

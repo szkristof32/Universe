@@ -59,6 +59,9 @@ namespace UniverseEngine {
 
 	Renderer::~Renderer()
 	{
+		s_Shader.reset();
+		s_VertexBuffer.reset();
+		s_VertexArray.reset();
 	}
 
 	void Renderer::BeginFrame()

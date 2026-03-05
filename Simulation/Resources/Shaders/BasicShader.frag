@@ -2,7 +2,12 @@
 
 layout (location = 0) out vec4 out_colour;
 
+layout (std140, binding = 1) uniform Properties
+{
+	vec4 Colour;
+} u_properties;
+
 void main()
 {
-	out_colour = vec4(0.2, 0.8, 0.3, 1.0);
+	out_colour = u_properties.Colour;
 }

@@ -47,7 +47,7 @@ namespace UniverseEngine {
 	void Context::BeginFrame() const
 	{
 		glViewport(0, 0, m_Window->GetWidth(), m_Window->GetHeight());
-		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 

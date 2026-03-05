@@ -5,6 +5,7 @@ function ProcessDependencies()
 	{
 		"%{vendor}/glfw/include",
 		"%{vendor}/glad/include",
+		"%{vendor}/glm",
 	}
 
 	links

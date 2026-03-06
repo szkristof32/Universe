@@ -11,6 +11,7 @@ namespace UniverseEngine {
 
 	static void DebugCallback(uint32_t source, uint32_t type, uint32_t id, uint32_t severity, int length, const char* message, const void* userParam)
 	{
+		if (severity != GL_DEBUG_SEVERITY_HIGH) return;
 		switch (severity)
 		{
 			case GL_DEBUG_SEVERITY_NOTIFICATION:	std::cout << "OpenGL notification: " << message << "\n"; return;

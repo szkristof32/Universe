@@ -55,11 +55,11 @@ namespace UniverseEngine {
 		s_Matrices.ProjectionView = glm::perspectiveFov(glm::radians(70.0f), 16.0f / 9.0f, 1.0f, 0.1f, 100.0f)
 			* glm::translate(glm::mat4(1.0f), { 0.0f, 0.0f, -4.0f });
 		s_Matrices.Transformation = glm::mat4(1.0f);
-		s_MatricesUniformBuffer = std::make_unique<UniformBuffer>(Buffer(&s_Matrices, sizeof(s_Matrices)));
+		s_MatricesUniformBuffer = MakeUnique<UniformBuffer>(Buffer(&s_Matrices, sizeof(s_Matrices)));
 		s_MatricesUniformBuffer->BindToShader(0);
 
 		s_Properties.Colour = glm::vec4(0.8f, 0.2f, 0.3f, 1.0f);
-		s_PropertiesUniformBuffer = std::make_unique<UniformBuffer>(Buffer(&s_Properties, sizeof(s_Properties)));
+		s_PropertiesUniformBuffer = MakeUnique<UniformBuffer>(Buffer(&s_Properties, sizeof(s_Properties)));
 		s_PropertiesUniformBuffer->BindToShader(1);
 	}
 

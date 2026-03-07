@@ -8,25 +8,34 @@ using namespace UniverseEngine;
 
 void SimulationLayer::OnAttach()
 {
-	m_VertexArray = MakeUnique<VertexArray>();
-
-	float vertices[] = {
-		-0.5f, 0.5f, 0.0f,
-		-0.5f, -0.5f, 0.0f,
-		0.5f, 0.5f, 0.0f,
-		0.5f, -0.5f, 0.0f
+	std::vector<Vertex> vertices = {
+		{
+			{ -0.5f, 0.5f, 0.0f },
+			{ 0.0f, 0.0f, -1.0f },
+		},
+		{
+			{ -0.5f, -0.5f, 0.0f },
+			{ 0.0f, 0.0f, -1.0f },
+		},
+		{
+			{ 0.5f, 0.5f, 0.0f },
+			{ 0.0f, 0.0f, -1.0f },
+		},
+		{
+			{ 0.5f, 0.5f, 0.0f },
+			{ 0.0f, 0.0f, -1.0f },
+		},
+		{
+			{ -0.5f, -0.5f, 0.0f },
+			{ 0.0f, 0.0f, -1.0f },
+		},
+		{
+			{ 0.5f, -0.5f, 0.0f },
+			{ 0.0f, 0.0f, -1.0f },
+		},
 	};
-	m_VertexBuffer = MakeUnique<VertexBuffer>(Buffer(vertices, sizeof(vertices)));
-	m_VertexBuffer->Bind();
 
-	m_VertexArray->AddAttribute(AttributeType::Float3);
-	m_VertexArray->BakeLayout();
-
-	uint32_t indices[] = {
-		0, 1, 2,
-		2, 1, 3
-	};
-	m_IndexBuffer = MakeUnique<IndexBuffer>(Buffer(indices, sizeof(indices)));
+	m_Mesh = Mesh(vertices);
 
 	m_Shader = MakeUnique<Shader>();
 	m_Shader->LoadFromDisk("BasicShader");
@@ -55,9 +64,9 @@ void SimulationLayer::OnRender()
 	m_MatricesUniformBuffer->Bind();
 	m_PropertiesUniformBuffer->Bind();
 
-	m_VertexArray->Bind();
-	m_VertexBuffer->Bind();
-	m_IndexBuffer->Bind();
+	m_Mesh.GetVertexArray()->Bind();
+	m_Mesh.GetVertexBuffer()->Bind();
+	m_Mesh.GetIndexBuffer()->Bind();
 
 	RendererAPI::DrawIndexed(6, PrimitiveMode::TriangleList);
 }

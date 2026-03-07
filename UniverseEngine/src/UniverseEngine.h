@@ -17,3 +17,4 @@
 #include "UniverseEngine/Renderer/VertexArray.h"
 #include "UniverseEngine/Renderer/Shader.h"
 #include "UniverseEngine/Renderer/RendererAPI.h"
+#include "UniverseEngine/Renderer/Mesh.h"

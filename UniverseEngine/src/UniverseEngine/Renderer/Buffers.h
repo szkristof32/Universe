@@ -13,9 +13,12 @@ namespace UniverseEngine {
 
 		void Bind() const;
 
+		void SetData(const Buffer& buffer, uint32_t offset = 0);
+
 		uint32_t GetHandle() const { return m_BufferHandle; }
 	private:
 		uint32_t m_BufferHandle = 0;
+		uint32_t m_Size = 0;
 	};
 
 	class IndexBuffer
@@ -27,9 +30,12 @@ namespace UniverseEngine {
 
 		void Bind() const;
 
+		void SetData(const Buffer& buffer, uint32_t offset = 0);
+
 		uint32_t GetHandle() const { return m_BufferHandle; }
 	private:
 		uint32_t m_BufferHandle = 0;
+		size_t m_Size = 0;
 	};
 
 	class UniformBuffer

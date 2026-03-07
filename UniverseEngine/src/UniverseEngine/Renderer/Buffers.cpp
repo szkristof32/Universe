@@ -6,6 +6,7 @@
 namespace UniverseEngine {
 
 	VertexBuffer::VertexBuffer(const Buffer& buffer)
+		: m_Size(buffer.Size)
 	{
 		glCreateBuffers(1, &m_BufferHandle);
 		glNamedBufferData(m_BufferHandle, buffer.Size, nullptr, GL_STATIC_DRAW);
@@ -22,7 +23,15 @@ namespace UniverseEngine {
 		glBindBuffer(GL_ARRAY_BUFFER, m_BufferHandle);
 	}
 
+	void VertexBuffer::SetData(const Buffer& buffer, uint32_t offset)
+	{
+		if (buffer.Size > m_Size)
+			glNamedBufferData(m_BufferHandle, buffer.Size, nullptr, GL_STATIC_DRAW);
+		glNamedBufferSubData(m_BufferHandle, offset, buffer.Size, buffer.Data);
+	}
+
 	IndexBuffer::IndexBuffer(const Buffer& buffer)
+		: m_Size(buffer.Size)
 	{
 		glCreateBuffers(1, &m_BufferHandle);
 		glNamedBufferData(m_BufferHandle, buffer.Size, nullptr, GL_STATIC_DRAW);
@@ -37,6 +46,13 @@ namespace UniverseEngine {
 	void IndexBuffer::Bind() const
 	{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_BufferHandle);
+	}
+
+	void IndexBuffer::SetData(const Buffer& buffer, uint32_t offset)
+	{
+		if (buffer.Size > m_Size)
+			glNamedBufferData(m_BufferHandle, buffer.Size, nullptr, GL_STATIC_DRAW);
+		glNamedBufferSubData(m_BufferHandle, offset, buffer.Size, buffer.Data);
 	}
 
 	UniformBuffer::UniformBuffer(const Buffer& buffer)

@@ -56,6 +56,7 @@ namespace UniverseEngine {
 		{
 			m_String = string.data();
 			m_Length = string.size();
+			return *this;
 		}
 
 		const char* Data() const { return m_String; }
@@ -86,7 +87,10 @@ namespace UniverseEngine {
 		size_t m_Length = 0;
 	};
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wliteral-suffix"
 	inline StringView operator""sv(const char* string) { return StringView(string); }
+#pragma GCC diagnostic pop
 
 }
 

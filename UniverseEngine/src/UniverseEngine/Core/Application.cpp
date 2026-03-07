@@ -26,6 +26,8 @@ namespace UniverseEngine {
 		{
 			m_Window->Update();
 
+			UpdateLayerStack();
+
 			for (const auto& layer : m_LayerStack)
 				layer->OnUpdate(0);
 
@@ -48,11 +50,43 @@ namespace UniverseEngine {
 
 	void Application::Initialise()
 	{
+		UpdateLayerStack();
+
 		m_Running = true;
 	}
 
 	void Application::Shutdown()
 	{
+		m_LayerStack.PopAll();
+	}
+
+	void Application::UpdateLayerStack()
+	{
+		for (auto&& overlay : m_OverlaysToPush)
+		{
+			overlay->OnAttach();
+			m_LayerStack.PushOverlay(std::move(overlay));
+		}
+		for (auto&& layer : m_LayersToPush)
+		{
+			layer->OnAttach();
+			m_LayerStack.PushLayer(std::move(layer));
+		}
+		for (const auto& layer : m_LayersToPop)
+		{
+			layer->OnDetach();
+			m_LayerStack.PopLayer(layer);
+		}
+		for (const auto& overlay : m_OverlaysToPop)
+		{
+			overlay->OnDetach();
+			m_LayerStack.PopOverlay(overlay);
+		}
+
+		m_LayersToPush.clear();
+		m_OverlaysToPush.clear();
+		m_LayersToPop.clear();
+		m_OverlaysToPop.clear();
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)

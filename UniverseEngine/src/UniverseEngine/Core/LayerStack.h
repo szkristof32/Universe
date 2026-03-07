@@ -10,15 +10,17 @@ namespace UniverseEngine {
 	class LayerStack
 	{
 	public:
-		void PushLayer(Reference<Layer> layer);
-		void PushOverlay(Reference<Layer> overlay);
+		void PushLayer(std::unique_ptr<Layer>&& layer);
+		void PushOverlay(std::unique_ptr<Layer>&& overlay);
 		void PopLayer(Reference<Layer> layer);
 		void PopOverlay(Reference<Layer> overlay);
 
-		std::vector<Reference<Layer>>::iterator begin() { return m_Layers.begin(); }
-		std::vector<Reference<Layer>>::iterator end() { return m_Layers.end(); }
+		std::vector<std::unique_ptr<Layer>>::iterator begin() { return m_Layers.begin(); }
+		std::vector<std::unique_ptr<Layer>>::iterator end() { return m_Layers.end(); }
+
+		void PopAll();
 	private:
-		std::vector<Reference<Layer>> m_Layers;
+		std::vector<std::unique_ptr<Layer>> m_Layers;
 		size_t m_LayerInsertIndex = 0;
 	};
 

@@ -5,6 +5,7 @@
 #include "UniverseEngine/Core/Base.h"
 #include "UniverseEngine/Core/Reference.h"
 #include "UniverseEngine/Core/Buffer.h"
+#include "UniverseEngine/Core/Layer.h"
 
 #include "UniverseEngine/Core/Events/Event.h"
 #include "UniverseEngine/Core/Events/ApplicationEvents.h"

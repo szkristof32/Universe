@@ -22,6 +22,12 @@ void SimulationLayer::OnAttach()
 	m_VertexArray->AddAttribute(AttributeType::Float3);
 	m_VertexArray->BakeLayout();
 
+	uint32_t indices[] = {
+		0, 1, 2,
+		2, 1, 3
+	};
+	m_IndexBuffer = MakeUnique<IndexBuffer>(Buffer(indices, sizeof(indices)));
+
 	m_Shader = MakeUnique<Shader>();
 	m_Shader->LoadFromDisk("BasicShader");
 
@@ -51,6 +57,7 @@ void SimulationLayer::OnRender()
 
 	m_VertexArray->Bind();
 	m_VertexBuffer->Bind();
+	m_IndexBuffer->Bind();
 
-	RendererAPI::Draw(4);
+	RendererAPI::DrawIndexed(6, PrimitiveMode::TriangleList);
 }

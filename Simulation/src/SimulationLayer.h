@@ -12,8 +12,9 @@ public:
 
 	virtual void OnRender() override;
 private:
-	std::unique_ptr<UE::VertexBuffer> m_VertexBuffer;
 	std::unique_ptr<UE::VertexArray> m_VertexArray;
+	std::unique_ptr<UE::VertexBuffer> m_VertexBuffer;
+	std::unique_ptr<UE::IndexBuffer> m_IndexBuffer;
 	std::unique_ptr<UE::Shader> m_Shader;
 	std::unique_ptr<UE::UniformBuffer> m_MatricesUniformBuffer;
 	std::unique_ptr<UE::UniformBuffer> m_PropertiesUniformBuffer;

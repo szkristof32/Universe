@@ -18,6 +18,20 @@ namespace UniverseEngine {
 		uint32_t m_BufferHandle = 0;
 	};
 
+	class IndexBuffer
+	{
+	public:
+		IndexBuffer() = default;
+		IndexBuffer(const Buffer& buffer);
+		~IndexBuffer();
+
+		void Bind() const;
+
+		uint32_t GetHandle() const { return m_BufferHandle; }
+	private:
+		uint32_t m_BufferHandle = 0;
+	};
+
 	class UniformBuffer
 	{
 	public:

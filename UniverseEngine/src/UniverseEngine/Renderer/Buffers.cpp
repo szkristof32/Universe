@@ -22,6 +22,23 @@ namespace UniverseEngine {
 		glBindBuffer(GL_ARRAY_BUFFER, m_BufferHandle);
 	}
 
+	IndexBuffer::IndexBuffer(const Buffer& buffer)
+	{
+		glCreateBuffers(1, &m_BufferHandle);
+		glNamedBufferData(m_BufferHandle, buffer.Size, nullptr, GL_STATIC_DRAW);
+		glNamedBufferSubData(m_BufferHandle, 0, buffer.Size, buffer.Data);
+	}
+
+	IndexBuffer::~IndexBuffer()
+	{
+		glDeleteBuffers(1, &m_BufferHandle);
+	}
+
+	void IndexBuffer::Bind() const
+	{
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_BufferHandle);
+	}
+
 	UniformBuffer::UniformBuffer(const Buffer& buffer)
 	{
 		glCreateBuffers(1, &m_BufferHandle);

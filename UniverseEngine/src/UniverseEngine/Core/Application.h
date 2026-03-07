@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UniverseEngine/Core/Window.h"
+#include "UniverseEngine/Core/LayerStack.h"
 
 #include "UniverseEngine/Renderer/Renderer.h"
 
@@ -31,6 +32,8 @@ namespace UniverseEngine {
 	private:
 		std::unique_ptr<Window> m_Window;
 		std::unique_ptr<Renderer> m_Renderer;
+		
+		LayerStack m_LayerStack;
 
 		bool m_Running = false;
 	};

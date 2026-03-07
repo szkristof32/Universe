@@ -26,7 +26,14 @@ namespace UniverseEngine {
 		{
 			m_Window->Update();
 
+			for (const auto& layer : m_LayerStack)
+				layer->OnUpdate(0);
+
 			m_Renderer->BeginFrame();
+
+			for (const auto& layer : m_LayerStack)
+				layer->OnRender();
+
 			m_Renderer->EndFrame();
 		}
 

@@ -29,3 +29,5 @@
 #include "UniverseEngine/Core/Reference.h"
 
 #include "UniverseEngine/Core/Events/Event.h"
+
+#include "UniverseEngine/Utils/StringView.h"

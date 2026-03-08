@@ -2,7 +2,7 @@
 
 #include <UniverseEngine.h>
 
-#include <glm/glm.hpp>
+#include "CelestialBody.h"
 
 class SimulationLayer : public UE::Layer
 {
@@ -10,21 +10,24 @@ public:
 	virtual void OnAttach() override;
 	virtual void OnDetach() override;
 
+	virtual void OnUpdate(float ts) override;
 	virtual void OnRender() override;
 private:
-	UE::Mesh m_Mesh;
+	UE::Mesh m_PlanetMesh;
 	std::unique_ptr<UE::Shader> m_Shader;
-	std::unique_ptr<UE::UniformBuffer> m_MatricesUniformBuffer;
+	std::unique_ptr<UE::UniformBuffer> m_CameraUniformBuffer;
 	std::unique_ptr<UE::UniformBuffer> m_PropertiesUniformBuffer;
-	struct Matrices
+	struct Camera
 	{
 		glm::mat4 ProjectionView;
-		glm::mat4 Transformation;
 	};
-	Matrices m_Matrices;
+	Camera m_Camera;
 	struct Properties
 	{
+		glm::mat4 Transformation;
 		glm::vec4 Colour;
 	};
 	Properties m_Properties;
+
+	std::vector<CelestialBody> m_Bodies;
 };

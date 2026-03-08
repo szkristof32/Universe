@@ -3,16 +3,12 @@
 layout (location = 0) in Output
 {
 	vec3 Normal;
+	vec4 Colour;
 } pass_input;
 
 layout (location = 0) out vec4 out_colour;
 
-layout (std140, binding = 1) uniform Properties
-{
-	vec4 Colour;
-} u_properties;
-
 void main()
 {
-	out_colour = u_properties.Colour;
+	out_colour = pass_input.Colour;
 }

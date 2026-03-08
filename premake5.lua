@@ -11,7 +11,8 @@ workspace "Universe"
 
 	defines
 	{
-		"NOMINMAX"
+		"NOMINMAX",
+		"MEMTRACE"
 	}
 
 	filter "action:vs*"

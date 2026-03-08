@@ -26,6 +26,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include <memtrace.h>
+
 #include "UniverseEngine/Core/Base.h"
 #include "UniverseEngine/Core/Reference.h"
 

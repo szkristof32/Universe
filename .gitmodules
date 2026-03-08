@@ -1,0 +1,3 @@
+[submodule "UniverseEngine/vendor/memtrace_gtest"]
+	path = UniverseEngine/vendor/memtrace_gtest
+	url = https://git.iit.bme.hu/prog2/seged/memtrace_gtest

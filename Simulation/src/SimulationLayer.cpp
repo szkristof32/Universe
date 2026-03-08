@@ -40,8 +40,8 @@ void SimulationLayer::OnAttach()
 	m_Shader = MakeUnique<Shader>();
 	m_Shader->LoadFromDisk("PlanetShader");
 
-	m_Camera.ProjectionView = glm::perspectiveFov(glm::radians(70.0f), 16.0f / 9.0f, 1.0f, 0.1f, 100.0f)
-		* glm::translate(glm::mat4(1.0f), { 0.0f, 0.0f, -4.0f });
+	m_Camera.Projection = glm::perspectiveFov(glm::radians(70.0f), 16.0f / 9.0f, 1.0f, 0.1f, 100.0f);
+	m_Camera.View = glm::translate(glm::mat4(1.0f), { 0.0f, 0.0f, -4.0f });
 	m_CameraUniformBuffer = MakeUnique<UniformBuffer>(Buffer(&m_Camera, sizeof(m_Camera)));
 	m_CameraUniformBuffer->BindToShader(0);
 
@@ -78,13 +78,33 @@ void SimulationLayer::OnRender()
 	m_PlanetMesh.GetVertexBuffer()->Bind();
 	m_PlanetMesh.GetIndexBuffer()->Bind();
 
+	if (m_CameraGeneration > m_PrevCameraGeneration)
+	{
+		m_CameraUniformBuffer->SetData(Buffer(&m_Camera, sizeof(m_Camera)));
+		m_PrevCameraGeneration = m_CameraGeneration;
+	}
+
 	for (const auto& body : m_Bodies)
 	{
 		m_Properties.Transformation = glm::translate(glm::mat4(1.0f), body.Position) *
 			glm::scale(glm::mat4(1.0f), glm::vec3(body.Radius));
 		m_Properties.Colour = body.Colour;
 		m_PropertiesUniformBuffer->SetData(Buffer(&m_Properties, sizeof(m_Properties)));
-	
+
 		RendererAPI::DrawIndexed(6, PrimitiveMode::TriangleList);
 	}
+}
+
+void SimulationLayer::OnEvent(Event& e)
+{
+	EventDispatcher dispatcher(e);
+	dispatcher.Dispatch<WindowResizeEvent>(UE_BIND_EVENT_FN(SimulationLayer::OnWindowResize));
+}
+
+bool SimulationLayer::OnWindowResize(WindowResizeEvent& e)
+{
+	float aspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
+	m_Camera.Projection = glm::perspectiveFov(glm::radians(70.0f), aspectRatio, 1.0f, 0.1f, 1000.0f);
+	m_CameraGeneration++;
+	return false;
 }

@@ -11,7 +11,8 @@ layout (location = 0) out Output
 
 layout (std140, binding = 0) uniform Camera
 {
-	mat4 ProjectionView;
+	mat4 Projection;
+	mat4 View;
 } u_camera;
 
 layout (std140, binding = 1) uniform Properties
@@ -25,5 +26,5 @@ void main()
 	pass_output.Normal = (u_properties.Transformation * vec4(in_normal, 0.0)).xyz;
 	pass_output.Colour = u_properties.Colour;
 
-	gl_Position = u_camera.ProjectionView * u_properties.Transformation * vec4(in_position, 1.0);
+	gl_Position = u_camera.Projection * u_camera.View * u_properties.Transformation * vec4(in_position, 1.0);
 }

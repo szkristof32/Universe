@@ -12,6 +12,10 @@ public:
 
 	virtual void OnUpdate(float ts) override;
 	virtual void OnRender() override;
+
+	virtual void OnEvent(UE::Event& e) override;
+private:
+	bool OnWindowResize(UE::WindowResizeEvent& e);
 private:
 	UE::Mesh m_PlanetMesh;
 	std::unique_ptr<UE::Shader> m_Shader;
@@ -19,9 +23,12 @@ private:
 	std::unique_ptr<UE::UniformBuffer> m_PropertiesUniformBuffer;
 	struct Camera
 	{
-		glm::mat4 ProjectionView;
+		glm::mat4 Projection;
+		glm::mat4 View;
 	};
 	Camera m_Camera;
+	uint32_t m_CameraGeneration = 0;
+	uint32_t m_PrevCameraGeneration = 0;
 	struct Properties
 	{
 		glm::mat4 Transformation;

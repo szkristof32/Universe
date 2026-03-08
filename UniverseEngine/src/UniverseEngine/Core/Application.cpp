@@ -46,6 +46,17 @@ namespace UniverseEngine {
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(UE_BIND_EVENT_FN(Application::OnWindowClose));
+
+		if (e.Handled)
+			return;
+
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); it++)
+		{
+			if (e.Handled)
+				return;
+			
+			(*it)->OnEvent(e);
+		}
 	}
 
 	void Application::Initialise()

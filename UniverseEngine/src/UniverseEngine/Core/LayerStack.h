@@ -17,6 +17,8 @@ namespace UniverseEngine {
 
 		std::vector<std::unique_ptr<Layer>>::iterator begin() { return m_Layers.begin(); }
 		std::vector<std::unique_ptr<Layer>>::iterator end() { return m_Layers.end(); }
+		std::vector<std::unique_ptr<Layer>>::reverse_iterator rbegin() { return m_Layers.rbegin(); }
+		std::vector<std::unique_ptr<Layer>>::reverse_iterator rend() { return m_Layers.rend(); }
 
 		void PopAll();
 	private:

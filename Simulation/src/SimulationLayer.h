@@ -3,6 +3,7 @@
 #include <UniverseEngine.h>
 
 #include "CelestialBody.h"
+#include "MeshGenerator.h"
 
 class SimulationLayer : public UE::Layer
 {
@@ -18,7 +19,9 @@ public:
 private:
 	bool OnWindowResize(UE::WindowResizeEvent& e);
 private:
+	MeshGenerator m_MeshGenerator;
 	UE::Mesh m_PlanetMesh;
+
 	std::unique_ptr<UE::Shader> m_Shader;
 	std::unique_ptr<UE::UniformBuffer> m_CameraUniformBuffer;
 	std::unique_ptr<UE::UniformBuffer> m_PropertiesUniformBuffer;

@@ -13,34 +13,7 @@ using namespace UniverseEngine;
 
 void SimulationLayer::OnAttach()
 {
-	std::vector<Vertex> vertices = {
-		{
-			{ -0.5f, 0.5f, 0.0f },
-			{ 0.0f, 0.0f, -1.0f },
-		},
-		{
-			{ -0.5f, -0.5f, 0.0f },
-			{ 0.0f, 0.0f, -1.0f },
-		},
-		{
-			{ 0.5f, 0.5f, 0.0f },
-			{ 0.0f, 0.0f, -1.0f },
-		},
-		{
-			{ 0.5f, 0.5f, 0.0f },
-			{ 0.0f, 0.0f, -1.0f },
-		},
-		{
-			{ -0.5f, -0.5f, 0.0f },
-			{ 0.0f, 0.0f, -1.0f },
-		},
-		{
-			{ 0.5f, -0.5f, 0.0f },
-			{ 0.0f, 0.0f, -1.0f },
-		},
-	};
-
-	m_PlanetMesh = Mesh(vertices);
+	m_PlanetMesh = m_MeshGenerator.GenerateSphere();
 
 	m_Shader = MakeUnique<Shader>();
 	m_Shader->LoadFromDisk("PlanetShader");
@@ -89,6 +62,11 @@ void SimulationLayer::OnRender()
 		m_PrevCameraGeneration = m_CameraGeneration;
 	}
 
+	RendererAPIConfiguration rendererAPIConfig{};
+	rendererAPIConfig.EnableDepthTest = true;
+
+	RendererAPI::Configure(rendererAPIConfig);
+
 	for (const auto& body : m_Bodies)
 	{
 		m_Properties.Transformation = glm::translate(glm::mat4(1.0f), body.Position) *
@@ -96,13 +74,12 @@ void SimulationLayer::OnRender()
 		m_Properties.Colour = body.Colour;
 		m_PropertiesUniformBuffer->SetData(Buffer(&m_Properties, sizeof(m_Properties)));
 
-		RendererAPI::DrawIndexed(6, PrimitiveMode::TriangleList);
+		RendererAPI::DrawIndexed(m_PlanetMesh.GetIndexCount(), PrimitiveMode::TriangleList);
 	}
 }
 
 void SimulationLayer::OnUIRender()
 {
-	ImGui::ShowDemoWindow();
 }
 
 void SimulationLayer::OnEvent(Event& e)

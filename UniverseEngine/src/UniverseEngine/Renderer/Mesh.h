@@ -29,22 +29,22 @@ namespace UniverseEngine {
 	{
 	public:
 		Mesh() = default;
-		Mesh(const std::vector<Vertex>& vertices);
+		Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
 
 		std::vector<Vertex>& GetVertices() { return m_Vertices; }
 		const std::vector<Vertex>& GetVertices() const { return m_Vertices; }
+		std::vector<uint32_t>& GetIndices() { return m_Indices; }
+		const std::vector<uint32_t>& GetIndices() const { return m_Indices; }
 
 		std::shared_ptr<VertexArray> GetVertexArray() const { return m_VertexArray; }
 		std::shared_ptr<VertexBuffer> GetVertexBuffer() const { return m_VertexBuffer; }
 		std::shared_ptr<IndexBuffer> GetIndexBuffer() const { return m_IndexBuffer; }
 
+		uint32_t GetIndexCount() const { return (uint32_t)m_Indices.size(); }
+
 		void Invalidate();
 	private:
-		void ProcessVertices();
-	private:
 		std::vector<Vertex> m_Vertices;
-
-		std::vector<Vertex> m_UniqueVertices;
 		std::vector<uint32_t> m_Indices;
 
 		std::shared_ptr<VertexBuffer> m_VertexBuffer;

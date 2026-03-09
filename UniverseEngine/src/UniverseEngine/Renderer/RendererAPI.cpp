@@ -32,4 +32,23 @@ namespace UniverseEngine {
 		glDrawElements(RendererAPIUtils::PrimitiveModeToGLMode(primitiveMode), indexCount, GL_UNSIGNED_INT, nullptr);
 	}
 
+	void RendererAPI::Configure(const RendererAPIConfiguration& configuration)
+	{
+		if (configuration.EnableDepthTest)
+			glEnable(GL_DEPTH_TEST);
+		else
+			glDisable(GL_DEPTH_TEST);
+		glDepthMask(configuration.EnableDepthWrite);
+		if (configuration.BackfaceCulling)
+			glEnable(GL_CULL_FACE);
+		else
+			glDisable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		if (configuration.EnableBlending)
+			glEnable(GL_BLEND);
+		else
+			glDisable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
+
 }

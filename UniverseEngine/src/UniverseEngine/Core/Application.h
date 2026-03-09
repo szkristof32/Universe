@@ -2,6 +2,7 @@
 
 #include "UniverseEngine/Core/Window.h"
 #include "UniverseEngine/Core/LayerStack.h"
+#include "UniverseEngine/Core/ImGuiLayer.h"
 
 #include "UniverseEngine/Renderer/Renderer.h"
 
@@ -58,12 +59,14 @@ namespace UniverseEngine {
 	private:
 		std::unique_ptr<Window> m_Window;
 		std::unique_ptr<Renderer> m_Renderer;
-		
+
 		LayerStack m_LayerStack;
 		std::vector<std::unique_ptr<Layer>> m_LayersToPush;
 		std::vector<std::unique_ptr<Layer>> m_OverlaysToPush;
 		std::vector<Reference<Layer>> m_LayersToPop;
 		std::vector<Reference<Layer>> m_OverlaysToPop;
+
+		Reference<ImGuiLayer> m_ImGuiLayer;
 
 		bool m_Running = false;
 	};

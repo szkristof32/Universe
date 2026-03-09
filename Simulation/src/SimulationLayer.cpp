@@ -4,6 +4,9 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#define IM_DISABLE_NEW
+#include <imgui.h>
+
 #include <iostream>
 
 using namespace UniverseEngine;
@@ -95,6 +98,11 @@ void SimulationLayer::OnRender()
 
 		RendererAPI::DrawIndexed(6, PrimitiveMode::TriangleList);
 	}
+}
+
+void SimulationLayer::OnUIRender()
+{
+	ImGui::ShowDemoWindow();
 }
 
 void SimulationLayer::OnEvent(Event& e)

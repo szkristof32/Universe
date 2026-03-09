@@ -19,6 +19,7 @@ namespace UniverseEngine {
 		virtual void OnDetach() {};
 		virtual void OnUpdate(float timestep) {};
 		virtual void OnRender() {};
+		virtual void OnUIRender() {};
 		virtual void OnEvent(Event& e) {};
 	private:
 		std::string m_DebugName;

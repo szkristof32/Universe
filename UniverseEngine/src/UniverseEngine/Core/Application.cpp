@@ -12,6 +12,8 @@ namespace UniverseEngine {
 
 		m_Window = MakeUnique<Window>(1280, 720, "UniverseEngine");
 		m_Renderer = MakeUnique<Renderer>();
+
+		m_ImGuiLayer = PushOverlay<ImGuiLayer>();
 	}
 
 	Application::~Application()
@@ -28,13 +30,18 @@ namespace UniverseEngine {
 
 			UpdateLayerStack();
 
-			for (const auto& layer : m_LayerStack)
-				layer->OnUpdate(0);
+			for (auto it = m_LayerStack.rbegin();it!=m_LayerStack.rend();it++)
+				(*it)->OnUpdate(0);
 
 			m_Renderer->BeginFrame();
 
 			for (const auto& layer : m_LayerStack)
 				layer->OnRender();
+
+			m_ImGuiLayer->BeginFrame();
+			for (const auto& layer : m_LayerStack)
+				layer->OnUIRender();
+			m_ImGuiLayer->EndFrame();
 
 			m_Renderer->EndFrame();
 		}

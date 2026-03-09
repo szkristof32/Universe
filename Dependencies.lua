@@ -7,12 +7,14 @@ function ProcessDependencies()
 		"%{vendor}/glad/include",
 		"%{vendor}/glm",
 		"%{vendor}/memtrace_gtest",
+		"%{vendor}/imgui",
 	}
 
 	links
 	{
 		"glfw3",
-		"memtrace_gtest"
+		"memtrace_gtest",
+		"imgui",
 	}
 
 	libdirs
@@ -32,4 +34,23 @@ project "memtrace_gtest"
 	{
 		"%{prj.location}/**.h",
 		"%{prj.location}/**.cpp",
+	}
+
+project "imgui"
+	location "UniverseEngine/vendor/imgui"
+	kind "StaticLib"
+
+	targetdir ("%{prj.location}/bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("%{prj.location}/bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.location}/**.h",
+		"%{prj.location}/**.cpp",
+	}
+
+	includedirs
+	{
+		"%{prj.location}",
+		"%{vendor}/glfw/include"
 	}

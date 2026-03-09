@@ -12,6 +12,7 @@ public:
 
 	virtual void OnUpdate(float ts) override;
 	virtual void OnRender() override;
+	virtual void OnUIRender() override;
 
 	virtual void OnEvent(UE::Event& e) override;
 private:

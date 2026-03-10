@@ -6,7 +6,7 @@
 namespace UniverseEngine {
 
 	VertexBuffer::VertexBuffer(const Buffer& buffer)
-		: m_Size(buffer.Size)
+		: m_Size(static_cast<uint32_t>(buffer.Size))
 	{
 		glCreateBuffers(1, &m_BufferHandle);
 		glNamedBufferData(m_BufferHandle, buffer.Size, nullptr, GL_STATIC_DRAW);
@@ -31,7 +31,7 @@ namespace UniverseEngine {
 	}
 
 	IndexBuffer::IndexBuffer(const Buffer& buffer)
-		: m_Size(buffer.Size)
+		: m_Size(static_cast<uint32_t>(buffer.Size))
 	{
 		glCreateBuffers(1, &m_BufferHandle);
 		glNamedBufferData(m_BufferHandle, buffer.Size, nullptr, GL_STATIC_DRAW);

@@ -28,7 +28,7 @@ namespace UniverseEngine {
 
 	void LayerStack::PopOverlay(Reference<Layer> overlay)
 	{
-		for (uint32_t i = m_LayerInsertIndex; i < m_Layers.size(); i++)
+		for (size_t i = m_LayerInsertIndex; i < m_Layers.size(); i++)
 		{
 			if (m_Layers[i].get() == overlay.Get())
 			{

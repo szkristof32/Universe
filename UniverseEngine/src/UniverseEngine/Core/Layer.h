@@ -17,7 +17,7 @@ namespace UniverseEngine {
 
 		virtual void OnAttach() {};
 		virtual void OnDetach() {};
-		virtual void OnUpdate(float timestep) {};
+		virtual void OnUpdate(Timestep delta) {};
 		virtual void OnRender() {};
 		virtual void OnUIRender() {};
 		virtual void OnEvent(Event& e) {};

@@ -39,9 +39,9 @@ void SimulationLayer::OnDetach()
 {
 }
 
-void SimulationLayer::OnUpdate(float ts)
+void SimulationLayer::OnUpdate(Timestep delta)
 {
-	m_CameraController.Update();
+	m_CameraController.Update(delta);
 
 	if (m_CameraController.GetViewMatrix() != m_Camera.View)
 	{

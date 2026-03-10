@@ -4,15 +4,17 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+using namespace UniverseEngine;
+
 CameraController::CameraController()
 	: m_Center(0.0f), m_Position(CalculatePosition())
 {
 }
 
-void CameraController::Update()
+void CameraController::Update(Timestep delta)
 {
-	m_Theta += 3.0f;
-	m_Center.y = 1.7f * glm::sin(glm::radians(m_Theta));
+	m_Theta += 30.0f * delta;
+	m_Center.y = 1.2f * glm::sin(glm::radians(m_Theta));
 	m_ValuesChanged = true;
 
 	m_Position = CalculatePosition();

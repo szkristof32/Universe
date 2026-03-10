@@ -68,6 +68,7 @@ namespace UniverseEngine {
 
 		Reference<ImGuiLayer> m_ImGuiLayer;
 
+		float m_PrevFrameTime = 0.0f;
 		bool m_Running = false;
 	};
 

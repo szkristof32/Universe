@@ -12,7 +12,7 @@ public:
 	virtual void OnAttach() override;
 	virtual void OnDetach() override;
 
-	virtual void OnUpdate(float ts) override;
+	virtual void OnUpdate(UE::Timestep delta) override;
 	virtual void OnRender() override;
 	virtual void OnUIRender() override;
 

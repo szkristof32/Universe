@@ -7,6 +7,10 @@
 #include "UniverseEngine/Core/Buffer.h"
 #include "UniverseEngine/Core/Layer.h"
 
+#include "UniverseEngine/Core/Time.h"
+#include "UniverseEngine/Core/Timer.h"
+#include "UniverseEngine/Core/Timestep.h"
+
 #include "UniverseEngine/Core/Events/Event.h"
 #include "UniverseEngine/Core/Events/ApplicationEvents.h"
 #include "UniverseEngine/Core/Events/KeyboardEvents.h"

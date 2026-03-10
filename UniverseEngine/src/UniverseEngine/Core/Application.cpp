@@ -26,12 +26,16 @@ namespace UniverseEngine {
 
 		while (m_Running)
 		{
+			float currentTime = Time::GetTime();
+			Timestep delta = currentTime - m_PrevFrameTime;
+			m_PrevFrameTime = currentTime;
+
 			m_Window->Update();
 
 			UpdateLayerStack();
 
 			for (auto it = m_LayerStack.rbegin();it!=m_LayerStack.rend();it++)
-				(*it)->OnUpdate(0);
+				(*it)->OnUpdate(delta);
 
 			m_Renderer->BeginFrame();
 
@@ -70,6 +74,7 @@ namespace UniverseEngine {
 	{
 		UpdateLayerStack();
 
+		m_PrevFrameTime = Time::GetTime();
 		m_Running = true;
 	}
 

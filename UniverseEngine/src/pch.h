@@ -31,6 +31,10 @@
 #include "UniverseEngine/Core/Base.h"
 #include "UniverseEngine/Core/Reference.h"
 
+#include "UniverseEngine/Core/Time.h"
+#include "UniverseEngine/Core/Timer.h"
+#include "UniverseEngine/Core/Timestep.h"
+
 #include "UniverseEngine/Core/Events/Event.h"
 
 #include "UniverseEngine/Utils/StringView.h"

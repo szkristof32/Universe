@@ -1,5 +1,6 @@
 #pragma once
 
+#include <UniverseEngine.h>
 #include <glm/glm.hpp>
 
 class CameraController
@@ -7,7 +8,7 @@ class CameraController
 public:
 	CameraController();
 
-	void Update();
+	void Update(UE::Timestep delta);
 
 	const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
 private:

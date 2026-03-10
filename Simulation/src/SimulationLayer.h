@@ -4,6 +4,7 @@
 
 #include "CelestialBody.h"
 #include "MeshGenerator.h"
+#include "CameraController.h"
 
 class SimulationLayer : public UE::Layer
 {
@@ -21,6 +22,7 @@ private:
 private:
 	MeshGenerator m_MeshGenerator;
 	UE::Mesh m_PlanetMesh;
+	CameraController m_CameraController;
 
 	std::unique_ptr<UE::Shader> m_Shader;
 	std::unique_ptr<UE::UniformBuffer> m_CameraUniformBuffer;

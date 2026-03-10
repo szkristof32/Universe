@@ -7,6 +7,7 @@ layout (location = 0) out Output
 {
 	vec3 Normal;
 	vec4 Colour;
+	vec3 WorldPosition;
 } pass_output;
 
 layout (std140, binding = 0) uniform Camera
@@ -23,8 +24,11 @@ layout (std140, binding = 1) uniform Properties
 
 void main()
 {
+	vec4 worldPosition = u_properties.Transformation * vec4(in_position, 1.0);
+
 	pass_output.Normal = (u_properties.Transformation * vec4(in_normal, 0.0)).xyz;
 	pass_output.Colour = u_properties.Colour;
+	pass_output.WorldPosition = worldPosition.xyz;
 
-	gl_Position = u_camera.Projection * u_camera.View * u_properties.Transformation * vec4(in_position, 1.0);
+	gl_Position = u_camera.Projection * u_camera.View * worldPosition;
 }

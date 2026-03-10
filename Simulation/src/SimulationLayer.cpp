@@ -41,6 +41,13 @@ void SimulationLayer::OnDetach()
 
 void SimulationLayer::OnUpdate(float ts)
 {
+	m_CameraController.Update();
+
+	if (m_CameraController.GetViewMatrix() != m_Camera.View)
+	{
+		m_Camera.View = m_CameraController.GetViewMatrix();
+		m_CameraGeneration++;
+	}
 }
 
 void SimulationLayer::OnRender()

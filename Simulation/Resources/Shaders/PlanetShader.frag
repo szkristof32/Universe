@@ -4,6 +4,7 @@ layout (location = 0) in Output
 {
 	vec3 Normal;
 	vec4 Colour;
+	vec3 WorldPosition;
 } pass_input;
 
 layout (location = 0) out vec4 out_colour;
@@ -12,7 +13,7 @@ const vec3 s_lightSource = vec3(10.0, 20.0, 8.0);
 
 void main()
 {
-	vec3 toLight = normalize(s_lightSource);
+	vec3 toLight = normalize(s_lightSource - pass_input.WorldPosition);
 	vec3 normal = normalize(pass_input.Normal);
 	float NdotL = max(dot(normal, toLight), 0.1);
 

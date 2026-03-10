@@ -24,6 +24,7 @@
 #include <thread>
 #include <type_traits>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include <memtrace.h>
@@ -35,6 +36,8 @@
 #include "UniverseEngine/Core/Timer.h"
 #include "UniverseEngine/Core/Timestep.h"
 
+#include "UniverseEngine/Core/Input/Input.h"
 #include "UniverseEngine/Core/Events/Event.h"
 
 #include "UniverseEngine/Utils/StringView.h"
+#include "UniverseEngine/Utils/SmoothValue.h"

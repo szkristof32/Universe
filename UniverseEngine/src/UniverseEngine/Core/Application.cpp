@@ -30,6 +30,7 @@ namespace UniverseEngine {
 			Timestep delta = currentTime - m_PrevFrameTime;
 			m_PrevFrameTime = currentTime;
 
+			Input::Update();
 			m_Window->Update();
 
 			UpdateLayerStack();
@@ -57,6 +58,11 @@ namespace UniverseEngine {
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(UE_BIND_EVENT_FN(Application::OnWindowClose));
+
+		if (e.Handled)
+			return;
+
+		Input::OnEvent(e);
 
 		if (e.Handled)
 			return;

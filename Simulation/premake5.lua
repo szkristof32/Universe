@@ -21,6 +21,11 @@ project "Simulation"
 		"UniverseEngine"
 	}
 
+	defines
+	{
+		"IM_DISABLE_NEW"
+	}
+
 	ProcessDependencies()
 
 	filter "configurations:Release"

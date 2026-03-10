@@ -11,6 +11,8 @@ public:
 	void Update(UE::Timestep delta);
 
 	const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
+
+	void OnUIRender();
 private:
 	glm::vec3 CalculatePosition() const;
 
@@ -18,12 +20,14 @@ private:
 private:
 	glm::mat4 m_ViewMatrix;
 
-	glm::vec3 m_Center;
+	UE::SmoothValue<glm::vec3> m_Center;
 	glm::vec3 m_Position;
 
-	float m_Theta = 0.0f;
-	float m_Pitch = 30.0f;
-	float m_Distance = 10.0f;
+	UE::SmoothValue<float> m_Theta = 0.0f;
+	UE::SmoothValue<float> m_Pitch = 30.0f;
+	UE::SmoothValue<float> m_Distance = 10.0f;
 
-	bool m_ValuesChanged = true;
+	float m_HorizontalRotationSpeed = 15.0f;
+	float m_VerticalRotationSpeed = 30.0f;
+	float m_ZoomSpeed = 40.0f;
 };

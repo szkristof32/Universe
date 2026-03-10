@@ -22,3 +22,5 @@
 #include "UniverseEngine/Renderer/Shader.h"
 #include "UniverseEngine/Renderer/RendererAPI.h"
 #include "UniverseEngine/Renderer/Mesh.h"
+
+#include "UniverseEngine/Utils/SmoothValue.h"

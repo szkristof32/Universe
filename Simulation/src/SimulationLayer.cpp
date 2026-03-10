@@ -4,7 +4,6 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#define IM_DISABLE_NEW
 #include <imgui.h>
 
 #include <iostream>
@@ -87,6 +86,7 @@ void SimulationLayer::OnRender()
 
 void SimulationLayer::OnUIRender()
 {
+	m_CameraController.OnUIRender();
 }
 
 void SimulationLayer::OnEvent(Event& e)

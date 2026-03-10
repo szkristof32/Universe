@@ -20,7 +20,8 @@ project "UniverseEngine"
 
 	defines
 	{
-		"GLFW_INCLUDE_NONE"
+		"GLFW_INCLUDE_NONE",
+		"IM_DISABLE_NEW"
 	}
 
 	ProcessDependencies()

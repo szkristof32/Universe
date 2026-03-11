@@ -4,6 +4,8 @@
 
 struct CelestialBody
 {
+	std::string Name = "Planet";
+
 	glm::vec4 Colour;
 	glm::vec3 Position;
 	glm::vec3 Velocity;

@@ -43,4 +43,8 @@ private:
 	Properties m_Properties;
 
 	std::vector<CelestialBody> m_Bodies;
+	size_t m_SelectedBody = -1;
+
+	CelestialBody m_BodyToAdd{};
+	bool m_Adding = false;
 };

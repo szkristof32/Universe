@@ -15,15 +15,19 @@ public:
 	virtual void OnUpdate(UE::Timestep delta) override;
 	virtual void OnRender() override;
 	virtual void OnUIRender() override;
-
-	virtual void OnEvent(UE::Event& e) override;
 private:
-	bool OnWindowResize(UE::WindowResizeEvent& e);
+	void RecalculateProjection(float aspectRatio);
 private:
 	MeshGenerator m_MeshGenerator;
 	UE::Mesh m_PlanetMesh;
 	CameraController m_CameraController;
 
+	bool m_ViewportFocused = false;
+	glm::vec2 m_ViewportSize;
+	uint32_t m_ViewportSizeGeneration = 0;
+	uint32_t m_PrevViewportSizeGeneration = 0;
+
+	std::unique_ptr<UE::Framebuffer> m_Framebuffer;
 	std::unique_ptr<UE::Shader> m_Shader;
 	std::unique_ptr<UE::UniformBuffer> m_CameraUniformBuffer;
 	std::unique_ptr<UE::UniformBuffer> m_PropertiesUniformBuffer;

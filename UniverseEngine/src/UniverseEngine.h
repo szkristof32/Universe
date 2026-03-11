@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "UniverseEngine/Core/Base.h"
+#include "UniverseEngine/Core/Application.h"
 #include "UniverseEngine/Core/Reference.h"
 #include "UniverseEngine/Core/Buffer.h"
 #include "UniverseEngine/Core/Layer.h"
@@ -21,6 +22,7 @@
 #include "UniverseEngine/Renderer/VertexArray.h"
 #include "UniverseEngine/Renderer/Shader.h"
 #include "UniverseEngine/Renderer/RendererAPI.h"
+#include "UniverseEngine/Renderer/Framebuffer.h"
 #include "UniverseEngine/Renderer/Mesh.h"
 
 #include "UniverseEngine/Utils/SmoothValue.h"

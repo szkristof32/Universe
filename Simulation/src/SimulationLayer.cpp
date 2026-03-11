@@ -16,6 +16,15 @@ void SimulationLayer::OnAttach()
 {
 	m_PlanetMesh = m_MeshGenerator.GenerateSphere();
 
+	FramebufferSpecification framebufferSpec{};
+	framebufferSpec.Width = 1280;
+	framebufferSpec.Height = 720;
+	framebufferSpec.Attachments = {
+		FramebufferAttachmentType::ColourAttachment,
+		FramebufferAttachmentType::DepthAttachment
+	};
+	m_Framebuffer = MakeUnique<Framebuffer>(framebufferSpec);
+
 	m_Shader = MakeUnique<Shader>();
 	m_Shader->LoadFromDisk("PlanetShader");
 
@@ -43,7 +52,10 @@ void SimulationLayer::OnDetach()
 
 void SimulationLayer::OnUpdate(Timestep delta)
 {
-	m_CameraController.Update(delta);
+	if (m_ViewportFocused)
+	{
+		m_CameraController.Update(delta);
+	}
 
 	if (m_CameraController.GetViewMatrix() != m_Camera.View)
 	{
@@ -56,6 +68,14 @@ void SimulationLayer::OnRender()
 {
 	if (m_Bodies.empty())
 		return;
+
+	if (m_ViewportSizeGeneration > m_PrevViewportSizeGeneration)
+	{
+		m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+		m_PrevViewportSizeGeneration = m_ViewportSizeGeneration;
+	}
+
+	m_Framebuffer->Bind();
 
 	m_Shader->Bind();
 	m_CameraUniformBuffer->Bind();
@@ -95,11 +115,34 @@ void SimulationLayer::OnRender()
 
 		RendererAPI::DrawIndexed(m_PlanetMesh.GetIndexCount(), PrimitiveMode::TriangleList);
 	}
+
+	auto window = Application::Get()->GetWindow();
+	m_Framebuffer->Unbind(window->GetWidth(), window->GetHeight());
 }
 
 void SimulationLayer::OnUIRender()
 {
+	ImGui::DockSpaceOverViewport();
+
 	m_CameraController.OnUIRender();
+
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
+	ImGui::Begin("Viewport");
+	ImGui::PopStyleVar();
+
+	m_ViewportFocused = ImGui::IsWindowHovered();
+
+	ImVec2 contentRegion = ImGui::GetContentRegionAvail();
+	if (*reinterpret_cast<glm::vec2*>(&contentRegion) != m_ViewportSize)
+	{
+		m_ViewportSizeGeneration++;
+		m_ViewportSize = { contentRegion.x, contentRegion.y };
+		RecalculateProjection(contentRegion.x / contentRegion.y);
+	}
+
+	ImGui::Image(m_Framebuffer->GetColourAttachment(), contentRegion, { 0, 1 }, { 1, 0 });
+
+	ImGui::End();
 
 	ImGui::Begin("Bodies");
 
@@ -201,16 +244,8 @@ void SimulationLayer::OnUIRender()
 	ImGui::End();
 }
 
-void SimulationLayer::OnEvent(Event& e)
+void SimulationLayer::RecalculateProjection(float aspectRatio)
 {
-	EventDispatcher dispatcher(e);
-	dispatcher.Dispatch<WindowResizeEvent>(UE_BIND_EVENT_FN(SimulationLayer::OnWindowResize));
-}
-
-bool SimulationLayer::OnWindowResize(WindowResizeEvent& e)
-{
-	float aspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
 	m_Camera.Projection = glm::perspectiveFov(glm::radians(70.0f), aspectRatio, 1.0f, 0.1f, 1000.0f);
 	m_CameraGeneration++;
-	return false;
 }

@@ -6,6 +6,9 @@
 #include "MeshGenerator.h"
 #include "CameraController.h"
 
+#include "Panels/PropertiesPanel.h"
+#include "Panels/BodiesPanel.h"
+
 class SimulationLayer : public UE::Layer
 {
 public:
@@ -47,8 +50,9 @@ private:
 	Properties m_Properties;
 
 	std::vector<CelestialBody> m_Bodies;
-	size_t m_SelectedBody = -1;
-
 	CelestialBody m_BodyToAdd{};
 	bool m_Adding = false;
+
+	std::unique_ptr<PropertiesPanel> m_PropertiesPanel;
+	std::unique_ptr<BodiesPanel> m_BodiesPanel;
 };

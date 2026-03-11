@@ -44,6 +44,25 @@ void SimulationLayer::OnAttach()
 	testBody.Colour = { 0.2f, 0.4f, 0.6f, 1.0f };
 	testBody.Radius = 1.5f;
 	m_Bodies.emplace_back(std::move(testBody));
+
+	m_PropertiesPanel = MakeUnique<PropertiesPanel>();
+	m_BodiesPanel = MakeUnique<BodiesPanel>();
+
+	m_PropertiesPanel->SetDeleteCallback([&](CelestialBody& body)
+	{
+		auto it = std::find(m_Bodies.begin(), m_Bodies.end(), body);
+		if (it != m_Bodies.end())
+			m_Bodies.erase(it);
+	});
+	m_BodiesPanel->SetSelectBodyCallback([&](CelestialBody& body)
+	{
+		m_PropertiesPanel->SetSelectedBody(body);
+	});
+	m_BodiesPanel->SetDeselectBodyCallback([&]()
+	{
+		m_PropertiesPanel->ClearSelectedBody();
+	});
+	m_BodiesPanel->SetBodies(m_Bodies);
 }
 
 void SimulationLayer::OnDetach()
@@ -126,6 +145,9 @@ void SimulationLayer::OnUIRender()
 
 	m_CameraController.OnUIRender();
 
+	m_PropertiesPanel->OnUIRender();
+	m_BodiesPanel->OnUIRender();
+
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
 	ImGui::Begin("Viewport");
 	ImGui::PopStyleVar();
@@ -141,105 +163,6 @@ void SimulationLayer::OnUIRender()
 	}
 
 	ImGui::Image(m_Framebuffer->GetColourAttachment(), contentRegion, { 0, 1 }, { 1, 0 });
-
-	ImGui::End();
-
-	ImGui::Begin("Bodies");
-
-	ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen;
-
-	if (ImGui::TreeNodeEx("Bodies", treeNodeFlags))
-	{
-		treeNodeFlags |= ImGuiTreeNodeFlags_Leaf;
-
-		for (size_t i = 0; i < m_Bodies.size(); i++)
-		{
-			const auto& body = m_Bodies[i];
-
-			if (ImGui::TreeNodeEx(body.Name.c_str(), treeNodeFlags | (m_SelectedBody == i ? ImGuiTreeNodeFlags_Selected : 0)))
-				ImGui::TreePop();
-
-			if (ImGui::IsItemClicked() || ImGui::IsItemFocused())
-				m_SelectedBody = i;
-		}
-
-		ImGui::TreePop();
-	}
-
-	if (ImGui::Button("Add body"))
-	{
-		ImGui::OpenPopup("Add body");
-		m_BodyToAdd = {};
-		m_Adding = true;
-	}
-
-	if (ImGui::BeginPopupModal("Add body", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
-	{
-		ImGui::InputText("Name", &m_BodyToAdd.Name);
-		ImGui::ColorEdit4("Colour", glm::value_ptr(m_BodyToAdd.Colour));
-		ImGui::DragFloat3("Position", glm::value_ptr(m_BodyToAdd.Position), 0.01f);
-		ImGui::DragFloat3("Velocity", glm::value_ptr(m_BodyToAdd.Velocity), 0.01f);
-		ImGui::DragFloat("Radius", &m_BodyToAdd.Radius, 0.01f, 0.1f);
-		ImGui::DragFloat("Surface gravity", &m_BodyToAdd.SurfaceGravity, 0.01f);
-
-		if (ImGui::Button("Add"))
-		{
-			m_Bodies.emplace_back(std::move(m_BodyToAdd));
-			m_BodyToAdd = {};
-			m_Adding = false;
-			ImGui::CloseCurrentPopup();
-		}
-		ImGui::SameLine(0.0f, 10.0f);
-		if (ImGui::Button("Close"))
-		{
-			ImGui::CloseCurrentPopup();
-		}
-
-		ImGui::EndPopup();
-	}
-
-	ImGui::End();
-
-	ImGui::Begin("Properties");
-
-	if (m_SelectedBody == -1 || m_SelectedBody >= m_Bodies.size())
-	{
-		ImGui::Text("Select a body to see its properties");
-	}
-	else
-	{
-		auto& body = m_Bodies[m_SelectedBody];
-
-		ImGui::InputText("Name", &body.Name);
-		ImGui::ColorEdit4("Colour", glm::value_ptr(body.Colour));
-		ImGui::DragFloat3("Position", glm::value_ptr(body.Position), 0.01f);
-		ImGui::DragFloat3("Velocity", glm::value_ptr(body.Velocity), 0.01f);
-		ImGui::DragFloat("Radius", &body.Radius, 0.01f, 0.1f);
-		ImGui::DragFloat("Surface gravity", &body.SurfaceGravity, 0.01f);
-
-		if (ImGui::Button("Delete"))
-		{
-			ImGui::OpenPopup("Confirmation");
-		}
-
-		if (ImGui::BeginPopupModal("Confirmation", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
-		{
-			ImGui::Text("Are you sure you want to delete the body?");
-
-			if (ImGui::Button("Yes"))
-			{
-				m_Bodies.erase(m_Bodies.begin() + m_SelectedBody);
-				m_SelectedBody = -1;
-				ImGui::CloseCurrentPopup();
-			}
-			if (ImGui::Button("Cancel"))
-			{
-				ImGui::CloseCurrentPopup();
-			}
-
-			ImGui::EndPopup();
-		}
-	}
 
 	ImGui::End();
 }

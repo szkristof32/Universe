@@ -28,6 +28,10 @@ namespace UniverseEngine {
 		_Ty* operator->() const { return Get(); }
 		_Ty& operator*() { return *Get(); }
 		const _Ty& operator*() const { return *Get(); }
+
+		inline operator bool() const { return m_Ptr != nullptr; }
+		inline bool operator==(const Reference& other) const { return m_Ptr == other.m_Ptr; }
+		inline bool operator!=(const Reference& other) const { return !(*this == other); }
 	private:
 		_Ty* m_Ptr = nullptr;
 	};

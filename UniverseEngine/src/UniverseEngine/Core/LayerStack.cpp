@@ -42,6 +42,8 @@ namespace UniverseEngine {
 	{
 		for (auto it = m_Layers.rbegin(); it != m_Layers.rend(); it++)
 			(*it)->OnDetach();
+		for (auto it = m_Layers.rbegin(); it != m_Layers.rend(); it++)
+			(*it).reset();
 		m_Layers.clear();
 	}
 

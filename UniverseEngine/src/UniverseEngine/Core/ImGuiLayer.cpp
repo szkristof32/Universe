@@ -37,6 +37,14 @@ namespace UniverseEngine {
 		ImGui::DestroyContext();
 	}
 
+	void ImGuiLayer::OnEvent(Event& e)
+	{
+		if (ImGui::IsAnyItemActive() && e.IsInCategory(EventCategory::Input))
+		{
+			e.Handled = true;
+		}
+	}
+
 	void ImGuiLayer::BeginFrame()
 	{
 		ImGui_ImplOpenGL3_NewFrame();

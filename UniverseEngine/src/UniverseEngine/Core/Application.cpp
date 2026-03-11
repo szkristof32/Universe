@@ -35,7 +35,7 @@ namespace UniverseEngine {
 
 			UpdateLayerStack();
 
-			for (auto it = m_LayerStack.rbegin();it!=m_LayerStack.rend();it++)
+			for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); it++)
 				(*it)->OnUpdate(delta);
 
 			m_Renderer->BeginFrame();
@@ -71,7 +71,7 @@ namespace UniverseEngine {
 		{
 			if (e.Handled)
 				return;
-			
+
 			(*it)->OnEvent(e);
 		}
 	}

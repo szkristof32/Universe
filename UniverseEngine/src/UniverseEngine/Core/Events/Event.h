@@ -42,6 +42,8 @@ namespace UniverseEngine {
 		virtual EventCategory GetCategory() const = 0;
 		virtual const char* GetName() const = 0;
 		virtual std::string ToString() const { return GetName(); }
+
+		bool IsInCategory(EventCategory category) const { return (uint32_t)GetCategory() & (uint32_t)category; }
 	public:
 		bool Handled = false;
 	};

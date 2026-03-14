@@ -21,15 +21,13 @@ void BodiesPanel::OnUIRender()
 			if (ImGui::TreeNodeEx(body.Name.c_str(), treeNodeFlags | (selected ? ImGuiTreeNodeFlags_Selected : 0)))
 				ImGui::TreePop();
 
-			if ((ImGui::IsItemClicked() || ImGui::IsItemFocused()) && m_SelectBodyCallback)
+			if ((ImGui::IsItemClicked() || ImGui::IsItemActive()) && m_SelectBodyCallback)
 				m_SelectedBody = (uint32_t)i;
 		}
 
 		ImGui::TreePop();
 	}
 
-	if (ImGui::IsMouseDown(ImGuiMouseButton_Left) && ImGui::IsWindowHovered())
-		m_SelectedBody = -1;
 
 	if (ImGui::Button("Add body"))
 	{
@@ -41,6 +39,9 @@ void BodiesPanel::OnUIRender()
 
 		m_Bodies->emplace_back(std::move(bodyToAdd));
 	}
+
+	if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) && ImGui::IsWindowHovered() && !ImGui::IsItemClicked())
+		m_SelectedBody = -1;
 
 	ImGui::End();
 

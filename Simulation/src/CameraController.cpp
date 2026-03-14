@@ -15,26 +15,29 @@ CameraController::CameraController()
 	m_Distance.SetAgility(5.0f);
 }
 
-void CameraController::Update(Timestep delta)
+void CameraController::Update(Timestep delta, bool enabled)
 {
-	if (Input::IsButtonDown(MouseButton::Left))
+	if (enabled)
 	{
-		float dx = Input::GetMouseDx() * m_HorizontalRotationSpeed * delta;
-		float dy = Input::GetMouseDy() * m_VerticalRotationSpeed * delta;
+		if (Input::IsButtonDown(MouseButton::Left))
+		{
+			float dx = Input::GetMouseDx() * m_HorizontalRotationSpeed * delta;
+			float dy = Input::GetMouseDy() * m_VerticalRotationSpeed * delta;
 
-		m_Theta.IncreaseTarget(-dx);
-		m_Pitch.IncreaseTarget(dy);
+			m_Theta.IncreaseTarget(-dx);
+			m_Pitch.IncreaseTarget(dy);
 
-		if (m_Pitch.GetTarget() >= 85.0f)
-			m_Pitch.SetTarget(85.0f);
-		if (m_Pitch.GetTarget() <= -85.0f)
-			m_Pitch.SetTarget(-85.0f);
-	}
-	if (Input::GetMouseScroll() != 0)
-	{
-		float zoomChange = Input::GetMouseScroll() * m_ZoomSpeed * delta;
+			if (m_Pitch.GetTarget() >= 85.0f)
+				m_Pitch.SetTarget(85.0f);
+			if (m_Pitch.GetTarget() <= -85.0f)
+				m_Pitch.SetTarget(-85.0f);
+		}
+		if (Input::GetMouseScroll() != 0)
+		{
+			float zoomChange = Input::GetMouseScroll() * m_ZoomSpeed * delta;
 
-		m_Distance.IncreaseTarget(-zoomChange);
+			m_Distance.IncreaseTarget(-zoomChange);
+		}
 	}
 
 	m_Center.Update(delta);

@@ -14,29 +14,8 @@ using namespace UniverseEngine;
 
 void SimulationLayer::OnAttach()
 {
-	m_PlanetMesh = m_MeshGenerator.GenerateSphere();
-
-	FramebufferSpecification framebufferSpec{};
-	framebufferSpec.Width = 1280;
-	framebufferSpec.Height = 720;
-	framebufferSpec.Attachments = {
-		FramebufferAttachmentType::ColourAttachment,
-		FramebufferAttachmentType::DepthAttachment
-	};
-	m_Framebuffer = MakeUnique<Framebuffer>(framebufferSpec);
-
-	m_Shader = MakeUnique<Shader>();
-	m_Shader->LoadFromDisk("PlanetShader");
-
 	m_Camera.Projection = glm::perspectiveFov(glm::radians(70.0f), 16.0f / 9.0f, 1.0f, 0.1f, 100.0f);
 	m_Camera.View = glm::translate(glm::mat4(1.0f), { 0.0f, 0.0f, -4.0f });
-	m_CameraUniformBuffer = MakeUnique<UniformBuffer>(Buffer(&m_Camera, sizeof(m_Camera)));
-	m_CameraUniformBuffer->BindToShader(0);
-
-	m_Properties.Transformation = glm::mat4(1.0f);
-	m_Properties.Colour = glm::vec4(0.8f, 0.2f, 0.3f, 1.0f);
-	m_PropertiesUniformBuffer = MakeUnique<UniformBuffer>(Buffer(&m_Properties, sizeof(m_Properties)));
-	m_PropertiesUniformBuffer->BindToShader(1);
 
 	CelestialBody testBody{};
 	testBody.Name = "Test body";
@@ -71,16 +50,10 @@ void SimulationLayer::OnDetach()
 
 void SimulationLayer::OnUpdate(Timestep delta)
 {
-	if (m_ViewportFocused)
-	{
-		m_CameraController.Update(delta);
-	}
+	m_CameraController.Update(delta, m_ViewportFocused);
 
 	if (m_CameraController.GetViewMatrix() != m_Camera.View)
-	{
 		m_Camera.View = m_CameraController.GetViewMatrix();
-		m_CameraGeneration++;
-	}
 }
 
 void SimulationLayer::OnRender()
@@ -88,55 +61,14 @@ void SimulationLayer::OnRender()
 	if (m_Bodies.empty())
 		return;
 
-	if (m_ViewportSizeGeneration > m_PrevViewportSizeGeneration)
-	{
-		m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-		m_PrevViewportSizeGeneration = m_ViewportSizeGeneration;
-	}
-
-	m_Framebuffer->Bind();
-
-	m_Shader->Bind();
-	m_CameraUniformBuffer->Bind();
-	m_PropertiesUniformBuffer->Bind();
-
-	m_PlanetMesh.GetVertexArray()->Bind();
-	m_PlanetMesh.GetVertexBuffer()->Bind();
-	m_PlanetMesh.GetIndexBuffer()->Bind();
-
-	if (m_CameraGeneration > m_PrevCameraGeneration)
-	{
-		m_CameraUniformBuffer->SetData(Buffer(&m_Camera, sizeof(m_Camera)));
-		m_PrevCameraGeneration = m_CameraGeneration;
-	}
-
-	RendererAPIConfiguration rendererAPIConfig{};
-	rendererAPIConfig.EnableDepthTest = true;
-
-	RendererAPI::Configure(rendererAPIConfig);
+	m_Renderer.BeginFrame(m_Camera, m_ViewportSize);
 
 	for (const auto& body : m_Bodies)
 	{
-		m_Properties.Transformation = glm::translate(glm::mat4(1.0f), body.Position) *
-			glm::scale(glm::mat4(1.0f), glm::vec3(body.Radius));
-		m_Properties.Colour = body.Colour;
-		m_PropertiesUniformBuffer->SetData(Buffer(&m_Properties, sizeof(m_Properties)));
-
-		RendererAPI::DrawIndexed(m_PlanetMesh.GetIndexCount(), PrimitiveMode::TriangleList);
+		m_Renderer.DrawPlanet(body);
 	}
 
-	if (m_Adding)
-	{
-		m_Properties.Transformation = glm::translate(glm::mat4(1.0f), m_BodyToAdd.Position) *
-			glm::scale(glm::mat4(1.0f), glm::vec3(m_BodyToAdd.Radius));
-		m_Properties.Colour = m_BodyToAdd.Colour;
-		m_PropertiesUniformBuffer->SetData(Buffer(&m_Properties, sizeof(m_Properties)));
-
-		RendererAPI::DrawIndexed(m_PlanetMesh.GetIndexCount(), PrimitiveMode::TriangleList);
-	}
-
-	auto window = Application::Get()->GetWindow();
-	m_Framebuffer->Unbind(window->GetWidth(), window->GetHeight());
+	m_Renderer.EndFrame();
 }
 
 void SimulationLayer::OnUIRender()
@@ -157,12 +89,11 @@ void SimulationLayer::OnUIRender()
 	ImVec2 contentRegion = ImGui::GetContentRegionAvail();
 	if (*reinterpret_cast<glm::vec2*>(&contentRegion) != m_ViewportSize)
 	{
-		m_ViewportSizeGeneration++;
 		m_ViewportSize = { contentRegion.x, contentRegion.y };
 		RecalculateProjection(contentRegion.x / contentRegion.y);
 	}
 
-	ImGui::Image(m_Framebuffer->GetColourAttachment(), contentRegion, { 0, 1 }, { 1, 0 });
+	ImGui::Image(m_Renderer.GetFinalImage(), contentRegion, { 0, 1 }, { 1, 0 });
 
 	ImGui::End();
 }
@@ -170,5 +101,4 @@ void SimulationLayer::OnUIRender()
 void SimulationLayer::RecalculateProjection(float aspectRatio)
 {
 	m_Camera.Projection = glm::perspectiveFov(glm::radians(70.0f), aspectRatio, 1.0f, 0.1f, 1000.0f);
-	m_CameraGeneration++;
 }

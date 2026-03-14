@@ -8,7 +8,7 @@ class CameraController
 public:
 	CameraController();
 
-	void Update(UE::Timestep delta);
+	void Update(UE::Timestep delta, bool enabled);
 
 	const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
 

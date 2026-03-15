@@ -7,6 +7,7 @@
 #include "UniverseEngine/Core/Reference.h"
 #include "UniverseEngine/Core/Buffer.h"
 #include "UniverseEngine/Core/Layer.h"
+#include "UniverseEngine/Core/UUID.h"
 
 #include "UniverseEngine/Core/Time.h"
 #include "UniverseEngine/Core/Timer.h"

@@ -1,11 +1,15 @@
 #pragma once
 
+#include <UniverseEngine.h>
+
 #include <glm/glm.hpp>
 
 #include <string>
 
 struct CelestialBody
 {
+	UE::UUID ID{};
+
 	std::string Name = "Planet";
 
 	glm::vec4 Colour;
@@ -22,10 +26,7 @@ struct CelestialBody
 
 	inline bool operator==(const CelestialBody& other) const
 	{
-		return Name == other.Name && Colour == other.Colour &&
-			Position == other.Position && Velocity == other.Velocity &&
-			Radius == other.Radius && SurfaceGravity == other.SurfaceGravity &&
-			Mass == other.Mass;
+		return ID == other.ID;
 	}
 	inline bool operator!=(const CelestialBody& other) const { return !(*this == other); }
 };

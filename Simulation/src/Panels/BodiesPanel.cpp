@@ -18,8 +18,12 @@ void BodiesPanel::OnUIRender()
 
 			bool selected = m_SelectedBody == i;
 
+			ImGui::PushID((int32_t)body.ID);
+
 			if (ImGui::TreeNodeEx(body.Name.c_str(), treeNodeFlags | (selected ? ImGuiTreeNodeFlags_Selected : 0)))
 				ImGui::TreePop();
+
+			ImGui::PopID();
 
 			if ((ImGui::IsItemClicked() || ImGui::IsItemActive()) && m_SelectBodyCallback)
 				m_SelectedBody = (uint32_t)i;

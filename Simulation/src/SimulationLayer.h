@@ -20,6 +20,9 @@ public:
 	virtual void OnUIRender() override;
 private:
 	void RecalculateProjection(float aspectRatio);
+
+	void UpdateVelocity(CelestialBody& body, UE::Timestep delta);
+	void UpdatePosition(CelestialBody& body, UE::Timestep delta);
 private:
 	CameraController m_CameraController;
 	Camera m_Camera;
@@ -30,6 +33,8 @@ private:
 	PlanetRenderer m_Renderer;
 
 	std::vector<CelestialBody> m_Bodies;
+	float m_GravitationalConstant = 0.0001f;
+	bool m_EnableSimulation = false;
 
 	std::unique_ptr<PropertiesPanel> m_PropertiesPanel;
 	std::unique_ptr<BodiesPanel> m_BodiesPanel;

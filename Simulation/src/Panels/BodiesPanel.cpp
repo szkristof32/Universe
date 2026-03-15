@@ -38,6 +38,8 @@ void BodiesPanel::OnUIRender()
 		bodyToAdd.CalculateMass();
 
 		m_Bodies->emplace_back(std::move(bodyToAdd));
+
+		m_SelectedBody = m_SelectedBody != -1 ? (uint32_t)m_Bodies->size() - 1 : -1;
 	}
 
 	if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) && ImGui::IsWindowHovered() && !ImGui::IsItemClicked())

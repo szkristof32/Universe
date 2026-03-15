@@ -138,7 +138,9 @@ void SimulationLayer::OnUIRender()
 	ImGui::Begin("Settings");
 
 	ImGui::Checkbox("Enable simulation", &m_EnableSimulation);
+	ImGui::PushItemWidth(ImGui::CalcTextSize("0.0001").x * 3.0f);
 	ImGui::DragFloat("Gravitational constant", &m_GravitationalConstant, 0.0001f, 0.0f, 0.0f, "%.4f");
+	ImGui::PopItemWidth();
 
 	ImGui::End();
 }

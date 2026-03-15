@@ -72,6 +72,10 @@ void SimulationLayer::OnUpdate(Timestep delta)
 			UpdatePosition(body, delta);
 		}
 	}
+	else
+	{
+		GeneratePreview();
+	}
 }
 
 void SimulationLayer::OnRender()
@@ -140,6 +144,8 @@ void SimulationLayer::OnUIRender()
 	ImGui::Checkbox("Enable simulation", &m_EnableSimulation);
 	ImGui::PushItemWidth(ImGui::CalcTextSize("0.0001").x * 3.0f);
 	ImGui::DragFloat("Gravitational constant", &m_GravitationalConstant, 0.0001f, 0.0f, 0.0f, "%.4f");
+	if (ImGui::Button("Recalculate preview"))
+		m_PreviewOutdated = true;
 	ImGui::PopItemWidth();
 
 	ImGui::End();
@@ -168,4 +174,39 @@ void SimulationLayer::UpdateVelocity(CelestialBody& body, Timestep delta)
 void SimulationLayer::UpdatePosition(CelestialBody& body, Timestep delta)
 {
 	body.Position += body.Velocity * (float)delta;
+}
+
+void SimulationLayer::GeneratePreview()
+{
+	if (!m_PreviewOutdated)
+		return;
+
+	std::vector<CelestialBody> backup = m_Bodies;
+	constexpr uint32_t lineSegmentCount = 100;
+
+	m_PreviewSegments.clear();
+	m_PreviewSegments.reserve(lineSegmentCount * m_Bodies.size());
+
+	for (uint32_t i = 0; i < lineSegmentCount; i++)
+	{
+		for (auto& body : m_Bodies)
+		{
+			LineSegment segment{};
+			segment.Start = body.Position;
+			m_PreviewSegments.emplace_back(segment);
+
+			UpdateVelocity(body, 1.0f / 60.0f);
+		}
+		uint32_t bodyIndex = 0;
+		for (auto& body : m_Bodies)
+		{
+			UpdatePosition(body, 1.0f / 60.0f);
+
+			LineSegment& segment = m_PreviewSegments[i * m_Bodies.size() + bodyIndex++];
+			segment.End = body.Position;
+		}
+	}
+
+	m_Bodies = backup;
+	m_PreviewOutdated = false;
 }

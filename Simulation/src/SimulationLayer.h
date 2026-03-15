@@ -9,6 +9,12 @@
 #include "Panels/PropertiesPanel.h"
 #include "Panels/BodiesPanel.h"
 
+struct LineSegment
+{
+	glm::vec3 Start;
+	glm::vec3 End;
+};
+
 class SimulationLayer : public UE::Layer
 {
 public:
@@ -23,6 +29,8 @@ private:
 
 	void UpdateVelocity(CelestialBody& body, UE::Timestep delta);
 	void UpdatePosition(CelestialBody& body, UE::Timestep delta);
+
+	void GeneratePreview();
 private:
 	CameraController m_CameraController;
 	Camera m_Camera;
@@ -34,6 +42,9 @@ private:
 	PlanetRenderer m_Renderer;
 
 	std::vector<CelestialBody> m_Bodies;
+	std::vector<LineSegment> m_PreviewSegments;
+	bool m_PreviewOutdated = true;
+
 	float m_GravitationalConstant = 0.0001f;
 	bool m_EnableSimulation = false;
 

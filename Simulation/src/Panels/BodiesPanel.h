@@ -12,6 +12,7 @@ public:
 	void OnUIRender();
 
 	void SetBodies(std::vector<CelestialBody>& bodies) { m_Bodies = &bodies; }
+	void ClearSelection() { m_SelectedBody = -1; }
 
 	template<typename _Fn>
 	void SetSelectBodyCallback(_Fn&& callback) { m_SelectBodyCallback = callback; }

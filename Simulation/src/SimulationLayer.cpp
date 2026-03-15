@@ -37,6 +37,7 @@ void SimulationLayer::OnAttach()
 		auto it = std::find(m_Bodies.begin(), m_Bodies.end(), body);
 		if (it != m_Bodies.end())
 			m_Bodies.erase(it);
+		m_BodiesPanel->ClearSelection();
 	});
 	m_BodiesPanel->SetSelectBodyCallback([&](CelestialBody& body)
 	{

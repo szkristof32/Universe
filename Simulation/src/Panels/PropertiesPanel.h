@@ -13,6 +13,7 @@ public:
 	void ClearSelectedBody() { m_SelectedBody = nullptr; }
 
 	bool HasSelected() const { return m_SelectedBody != nullptr; }
+	CelestialBody& GetSelectedBody() { return *m_SelectedBody; }
 	const CelestialBody& GetSelectedBody() const { return *m_SelectedBody; }
 
 	template<typename _Fn>

@@ -9,6 +9,7 @@
 
 #include <imgui.h>
 #include <misc/cpp/imgui_stdlib.h>
+#include <ImGuizmo.h>
 
 #include <iostream>
 
@@ -54,7 +55,7 @@ void SimulationLayer::OnDetach()
 
 void SimulationLayer::OnUpdate(Timestep delta)
 {
-	m_CameraController.Update(delta, m_ViewportFocused);
+	m_CameraController.Update(delta, m_ViewportFocused && !m_UsingGizmo);
 
 	if (m_CameraController.GetViewMatrix() != m_Camera.View)
 		m_Camera.View = m_CameraController.GetViewMatrix();
@@ -100,6 +101,10 @@ void SimulationLayer::OnUIRender()
 	ImGui::Begin("Viewport");
 	ImGui::PopStyleVar();
 
+	ImGuizmo::SetOrthographic(false);
+	ImGuizmo::SetDrawlist();
+	ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
+
 	m_ViewportFocused = ImGui::IsWindowHovered();
 
 	ImVec2 contentRegion = ImGui::GetContentRegionAvail();
@@ -110,6 +115,22 @@ void SimulationLayer::OnUIRender()
 	}
 
 	ImGui::Image(m_Renderer.GetFinalImage(), contentRegion, { 0, 1 }, { 1, 0 });
+
+	if (m_PropertiesPanel->HasSelected())
+	{
+		auto& selection = m_PropertiesPanel->GetSelectedBody();
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), selection.Position) *
+			glm::scale(glm::mat4(1.0f), glm::vec3(selection.Radius));
+
+		if (ImGuizmo::Manipulate(glm::value_ptr(m_Camera.View), glm::value_ptr(m_Camera.Projection), ImGuizmo::TRANSLATE,
+								 ImGuizmo::WORLD, glm::value_ptr(transform)))
+		{
+			selection.Position = glm::vec3(transform[3]);
+		}
+
+		m_UsingGizmo = ImGuizmo::IsUsing();
+	}
 
 	ImGui::End();
 

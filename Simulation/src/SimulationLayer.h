@@ -28,6 +28,7 @@ private:
 	Camera m_Camera;
 
 	bool m_ViewportFocused = false;
+	bool m_UsingGizmo = false;
 	glm::vec2 m_ViewportSize;
 
 	PlanetRenderer m_Renderer;

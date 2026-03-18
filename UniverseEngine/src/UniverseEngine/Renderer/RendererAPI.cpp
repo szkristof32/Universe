@@ -14,6 +14,7 @@ namespace UniverseEngine {
 				case PrimitiveMode::TriangleList:	return GL_TRIANGLES;
 				case PrimitiveMode::TriangleStrip:	return GL_TRIANGLE_STRIP;
 				case PrimitiveMode::TriangleFan:	return GL_TRIANGLE_FAN;
+				case PrimitiveMode::LineList:		return GL_LINES;
 			}
 
 			assert(false);
@@ -21,6 +22,8 @@ namespace UniverseEngine {
 		}
 
 	}
+
+	RendererAPIConfiguration RendererAPI::s_Configuration{};
 
 	void RendererAPI::Draw(uint32_t vertexCount, PrimitiveMode primitiveMode)
 	{
@@ -32,23 +35,24 @@ namespace UniverseEngine {
 		glDrawElements(RendererAPIUtils::PrimitiveModeToGLMode(primitiveMode), indexCount, GL_UNSIGNED_INT, nullptr);
 	}
 
-	void RendererAPI::Configure(const RendererAPIConfiguration& configuration)
+	void RendererAPI::Configure()
 	{
-		if (configuration.EnableDepthTest)
+		if (s_Configuration.EnableDepthTest)
 			glEnable(GL_DEPTH_TEST);
 		else
 			glDisable(GL_DEPTH_TEST);
-		glDepthMask(configuration.EnableDepthWrite);
-		if (configuration.BackfaceCulling)
+		glDepthMask(s_Configuration.EnableDepthWrite);
+		if (s_Configuration.BackfaceCulling)
 			glEnable(GL_CULL_FACE);
 		else
 			glDisable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
-		if (configuration.EnableBlending)
+		if (s_Configuration.EnableBlending)
 			glEnable(GL_BLEND);
 		else
 			glDisable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glLineWidth(s_Configuration.LineWidth);
 	}
 
 }

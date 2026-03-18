@@ -53,10 +53,10 @@ void PlanetRenderer::BeginFrame(Camera& camera, const glm::vec2& viewportSize)
 		m_CameraUniformBuffer->SetData(Buffer(&m_Camera, sizeof(m_Camera)));
 	}
 
-	RendererAPIConfiguration rendererAPIConfig{};
+	RendererAPIConfiguration& rendererAPIConfig = RendererAPI::GetConfiguration();
 	rendererAPIConfig.EnableDepthTest = true;
 
-	RendererAPI::Configure(rendererAPIConfig);
+	RendererAPI::Configure();
 }
 
 void PlanetRenderer::EndFrame()

@@ -31,6 +31,9 @@ public:
 	void DrawPlanet(const CelestialBody& planet);
 
 	uint32_t GetFinalImage() const { return m_Framebuffer->GetColourAttachment(); }
+
+	UE::Reference<UE::Framebuffer> GetFramebuffer() const { return m_Framebuffer; }
+	UE::Reference<UE::UniformBuffer> GetCameraUniformBuffer() const { return m_CameraUniformBuffer; }
 private:
 	MeshGenerator m_MeshGenerator;
 	UE::Mesh m_PlanetMesh;

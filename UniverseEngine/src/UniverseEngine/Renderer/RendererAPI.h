@@ -5,7 +5,8 @@ namespace UniverseEngine {
 	enum class PrimitiveMode
 	{
 		None = 0,
-		TriangleList, TriangleStrip, TriangleFan
+		TriangleList, TriangleStrip, TriangleFan,
+		LineList
 	};
 
 	struct RendererAPIConfiguration
@@ -14,6 +15,7 @@ namespace UniverseEngine {
 		bool EnableDepthWrite = true;
 		bool BackfaceCulling = true;
 		bool EnableBlending = false;
+		float LineWidth = 1.0f;
 	};
 
 	class RendererAPI
@@ -22,7 +24,10 @@ namespace UniverseEngine {
 		static void Draw(uint32_t vertexCount, PrimitiveMode primitiveMode);
 		static void DrawIndexed(uint32_t indexCount, PrimitiveMode primitiveMode);
 
-		static void Configure(const RendererAPIConfiguration& configuration);
+		static RendererAPIConfiguration& GetConfiguration() { return s_Configuration; }
+		static void Configure();
+	private:
+		static RendererAPIConfiguration s_Configuration;
 	};
 
 }

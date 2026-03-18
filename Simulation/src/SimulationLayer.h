@@ -4,16 +4,11 @@
 
 #include "CelestialBody.h"
 #include "PlanetRenderer.h"
+#include "PreviewRenderer.h"
 #include "CameraController.h"
 
 #include "Panels/PropertiesPanel.h"
 #include "Panels/BodiesPanel.h"
-
-struct LineSegment
-{
-	glm::vec3 Start;
-	glm::vec3 End;
-};
 
 class SimulationLayer : public UE::Layer
 {
@@ -40,6 +35,7 @@ private:
 	glm::vec2 m_ViewportSize;
 
 	PlanetRenderer m_Renderer;
+	PreviewRenderer m_PreviewRenderer;
 
 	std::vector<CelestialBody> m_Bodies;
 	std::vector<LineSegment> m_PreviewSegments;

@@ -20,6 +20,8 @@ void SimulationLayer::OnAttach()
 	m_Camera.Projection = glm::perspectiveFov(glm::radians(70.0f), 16.0f / 9.0f, 1.0f, 0.1f, 100.0f);
 	m_Camera.View = glm::translate(glm::mat4(1.0f), { 0.0f, 0.0f, -4.0f });
 
+	m_PreviewRenderer.Configure({ m_Renderer.GetFramebuffer(), m_Renderer.GetCameraUniformBuffer() });
+
 	CelestialBody testBody{};
 	testBody.Name = "Test body";
 	testBody.Position = glm::vec3(0.0f);
@@ -89,6 +91,10 @@ void SimulationLayer::OnRender()
 	{
 		m_Renderer.DrawPlanet(body);
 	}
+
+	m_PreviewRenderer.BeginFrame();
+	m_PreviewRenderer.DrawPreview(m_PreviewSegments);
+	m_PreviewRenderer.EndFrame();
 
 	m_Renderer.EndFrame();
 }

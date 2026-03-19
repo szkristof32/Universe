@@ -40,7 +40,10 @@ private:
 	std::vector<CelestialBody> m_Bodies;
 	std::vector<LineSegment> m_PreviewSegments;
 	bool m_PreviewOutdated = true;
+	float m_PreviewUpdateRate = 0.3f;
+	bool m_ShowPreview = true;
 
+	float m_SimulationSpeed = 1.0f;
 	float m_GravitationalConstant = 0.0001f;
 	bool m_EnableSimulation = false;
 

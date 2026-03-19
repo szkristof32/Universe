@@ -28,6 +28,7 @@ void SimulationLayer::OnAttach()
 	testBody.Colour = { 0.2f, 0.4f, 0.6f, 1.0f };
 	testBody.Radius = 1.5f;
 	testBody.SurfaceGravity = 300.0f;
+	testBody.Sun = true;
 	testBody.CalculateMass();
 	m_Bodies.emplace_back(std::move(testBody));
 
@@ -40,6 +41,15 @@ void SimulationLayer::OnAttach()
 		if (it != m_Bodies.end())
 			m_Bodies.erase(it);
 		m_BodiesPanel->ClearSelection();
+		m_PreviewOutdated = true;
+	});
+	m_PropertiesPanel->SetSunSelectCallback([&](CelestialBody& body)
+	{
+		for (auto& other : m_Bodies)
+		{
+			if (other == body) continue;
+			other.Sun = false;
+		}
 	});
 	m_BodiesPanel->SetSelectBodyCallback([&](CelestialBody& body)
 	{
@@ -65,19 +75,26 @@ void SimulationLayer::OnUpdate(Timestep delta)
 
 	if (m_EnableSimulation)
 	{
+		glm::vec3 sunPosition{};
+
 		for (auto& body : m_Bodies)
 		{
-			UpdateVelocity(body, delta);
+			UpdateVelocity(body, delta * m_SimulationSpeed);
 		}
 		for (auto& body : m_Bodies)
 		{
-			UpdatePosition(body, delta);
+			UpdatePosition(body, delta * m_SimulationSpeed);
+
+			if (body.Sun)
+				sunPosition = body.Position;
+		}
+		for (auto& body : m_Bodies)
+		{
+			body.Position -= sunPosition;
 		}
 	}
-	else
-	{
-		GeneratePreview();
-	}
+
+	GeneratePreview();
 }
 
 void SimulationLayer::OnRender()
@@ -92,9 +109,12 @@ void SimulationLayer::OnRender()
 		m_Renderer.DrawPlanet(body);
 	}
 
-	m_PreviewRenderer.BeginFrame();
-	m_PreviewRenderer.DrawPreview(m_PreviewSegments);
-	m_PreviewRenderer.EndFrame();
+	if (m_ShowPreview)
+	{
+		m_PreviewRenderer.BeginFrame();
+		m_PreviewRenderer.DrawPreview(m_PreviewSegments);
+		m_PreviewRenderer.EndFrame();
+	}
 
 	m_Renderer.EndFrame();
 }
@@ -107,6 +127,8 @@ void SimulationLayer::OnUIRender()
 
 	m_PropertiesPanel->OnUIRender();
 	m_BodiesPanel->OnUIRender();
+
+	m_PreviewOutdated |= m_PropertiesPanel->PreviewOutdated();
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0.0f, 0.0f });
 	ImGui::Begin("Viewport");
@@ -149,10 +171,14 @@ void SimulationLayer::OnUIRender()
 
 	ImGui::Checkbox("Enable simulation", &m_EnableSimulation);
 	ImGui::PushItemWidth(ImGui::CalcTextSize("0.0001").x * 3.0f);
+	ImGui::DragFloat("Simulation speed", &m_SimulationSpeed, 0.01f);
 	ImGui::DragFloat("Gravitational constant", &m_GravitationalConstant, 0.0001f, 0.0f, 0.0f, "%.4f");
+	ImGui::PopItemWidth();
+	if (ImGui::DragFloat("Preview update rate", &m_PreviewUpdateRate))
+		m_PreviewOutdated = true;
 	if (ImGui::Button("Recalculate preview"))
 		m_PreviewOutdated = true;
-	ImGui::PopItemWidth();
+	ImGui::Checkbox("Show preview", &m_ShowPreview);
 
 	ImGui::End();
 }
@@ -188,28 +214,40 @@ void SimulationLayer::GeneratePreview()
 		return;
 
 	std::vector<CelestialBody> backup = m_Bodies;
-	constexpr uint32_t lineSegmentCount = 100;
+	constexpr uint32_t lineSegmentCount = 1000;
 
 	m_PreviewSegments.clear();
 	m_PreviewSegments.reserve(lineSegmentCount * m_Bodies.size());
 
 	for (uint32_t i = 0; i < lineSegmentCount; i++)
 	{
+		glm::vec3 sunPosition{};
+
 		for (auto& body : m_Bodies)
 		{
 			LineSegment segment{};
 			segment.Start = body.Position;
 			m_PreviewSegments.emplace_back(segment);
 
-			UpdateVelocity(body, 1.0f / 60.0f);
+			UpdateVelocity(body, 1.0f / m_PreviewUpdateRate);
 		}
 		uint32_t bodyIndex = 0;
 		for (auto& body : m_Bodies)
 		{
-			UpdatePosition(body, 1.0f / 60.0f);
+			UpdatePosition(body, 1.0f / m_PreviewUpdateRate);
+
+			if (body.Sun)
+				sunPosition = body.Position;
 
 			LineSegment& segment = m_PreviewSegments[i * m_Bodies.size() + bodyIndex++];
 			segment.End = body.Position;
+		}
+		bodyIndex = 0;
+		for (auto& body : m_Bodies)
+		{
+			LineSegment& segment = m_PreviewSegments[i * m_Bodies.size() + bodyIndex++];
+			segment.End -= sunPosition;
+			body.Position -= sunPosition;
 		}
 	}
 

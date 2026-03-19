@@ -20,7 +20,7 @@ struct CelestialBody
 	float SurfaceGravity = 0.0f;
 	float Mass = 0.0f;
 
-	bool Active = false;
+	bool Sun = false;
 
 	void CalculateMass() { Mass = SurfaceGravity * Radius * Radius; }
 

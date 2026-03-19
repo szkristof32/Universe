@@ -39,9 +39,9 @@ void PreviewRenderer::DrawPreview(const std::vector<LineSegment>& segments)
 	m_Config.CameraUniformBuffer->Bind();
 
 	RendererAPIConfiguration& rendererAPIConfig = RendererAPI::GetConfiguration();
-	rendererAPIConfig.LineWidth = 4.0f;
+	rendererAPIConfig.LineWidth = 2.0f;
 
 	RendererAPI::Configure();
 
-	RendererAPI::Draw(segments.size() * 4, PrimitiveMode::LineList);
+	RendererAPI::Draw((uint32_t)segments.size() * 4, PrimitiveMode::LineList);
 }

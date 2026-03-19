@@ -17,10 +17,25 @@ void PropertiesPanel::OnUIRender()
 	{
 		ImGui::InputText("Name", &m_SelectedBody->Name);
 		ImGui::ColorEdit4("Colour", glm::value_ptr(m_SelectedBody->Colour));
-		ImGui::DragFloat3("Position", glm::value_ptr(m_SelectedBody->Position), 0.01f);
-		ImGui::DragFloat3("Velocity", glm::value_ptr(m_SelectedBody->Velocity), 0.01f);
-		ImGui::DragFloat("Radius", &m_SelectedBody->Radius, 0.01f, 0.1f);
-		ImGui::DragFloat("Surface gravity", &m_SelectedBody->SurfaceGravity, 0.01f);
+		if (ImGui::DragFloat3("Position", glm::value_ptr(m_SelectedBody->Position), 0.01f))
+			m_PreviewOutdated = true;
+		if (ImGui::DragFloat3("Velocity", glm::value_ptr(m_SelectedBody->Velocity), 0.01f))
+			m_PreviewOutdated = true;
+		if (ImGui::DragFloat("Radius", &m_SelectedBody->Radius, 0.01f, 0.1f))
+		{
+			m_SelectedBody->CalculateMass();
+			m_PreviewOutdated = true;
+		}
+		if (ImGui::DragFloat("Surface gravity", &m_SelectedBody->SurfaceGravity, 0.01f))
+		{
+			m_SelectedBody->CalculateMass();
+			m_PreviewOutdated = true;
+		}
+
+		if (ImGui::Checkbox("Center of gravity", &m_SelectedBody->Sun))
+			m_PreviewOutdated = true;
+		if (m_SelectedBody->Sun && m_SunSelectCallback)
+			m_SunSelectCallback(*m_SelectedBody);
 
 		if (ImGui::Button("Delete"))
 		{
@@ -45,6 +60,7 @@ void PropertiesPanel::OnUIRender()
 					m_DeleteCallback(*m_SelectedBody);
 				ClearSelectedBody();
 				ImGui::CloseCurrentPopup();
+				m_PreviewOutdated = true;
 			}
 			ImGui::SameLine(0.0f, 10.0f);
 			if (ImGui::Button("Cancel"))

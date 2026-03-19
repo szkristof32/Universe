@@ -10,10 +10,16 @@ struct PreviewRendererConfig
 	UE::Reference<UE::UniformBuffer> CameraUniformBuffer;
 };
 
+struct LineVertex
+{
+	glm::vec3 Position;
+	glm::vec4 Colour;
+};
+
 struct LineSegment
 {
-	glm::vec3 Start;
-	glm::vec3 End;
+	LineVertex Start;
+	LineVertex End;
 };
 
 class PreviewRenderer

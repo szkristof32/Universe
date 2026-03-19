@@ -51,6 +51,11 @@ void SimulationLayer::OnAttach()
 			other.Sun = false;
 		}
 	});
+	m_BodiesPanel->SetAddBodyCallback([&](CelestialBody&& body)
+	{
+		m_Bodies.emplace_back(std::move(body));
+		m_PreviewOutdated = true;
+	});
 	m_BodiesPanel->SetSelectBodyCallback([&](CelestialBody& body)
 	{
 		m_PropertiesPanel->SetSelectedBody(body);
@@ -226,7 +231,8 @@ void SimulationLayer::GeneratePreview()
 		for (auto& body : m_Bodies)
 		{
 			LineSegment segment{};
-			segment.Start = body.Position;
+			segment.Start.Position = body.Position;
+			segment.Start.Colour = body.Colour;
 			m_PreviewSegments.emplace_back(segment);
 
 			UpdateVelocity(body, 1.0f / m_PreviewUpdateRate);
@@ -240,13 +246,14 @@ void SimulationLayer::GeneratePreview()
 				sunPosition = body.Position;
 
 			LineSegment& segment = m_PreviewSegments[i * m_Bodies.size() + bodyIndex++];
-			segment.End = body.Position;
+			segment.End.Position = body.Position;
+			segment.End.Colour = body.Colour;
 		}
 		bodyIndex = 0;
 		for (auto& body : m_Bodies)
 		{
 			LineSegment& segment = m_PreviewSegments[i * m_Bodies.size() + bodyIndex++];
-			segment.End -= sunPosition;
+			segment.End.Position -= sunPosition;
 			body.Position -= sunPosition;
 		}
 	}

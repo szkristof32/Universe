@@ -41,7 +41,8 @@ void BodiesPanel::OnUIRender()
 		bodyToAdd.SurfaceGravity = 10.0f;
 		bodyToAdd.CalculateMass();
 
-		m_Bodies->emplace_back(std::move(bodyToAdd));
+		if (m_AddBodyCallback)
+			m_AddBodyCallback(std::move(bodyToAdd));
 
 		m_SelectedBody = m_SelectedBody != -1 ? (uint32_t)m_Bodies->size() - 1 : -1;
 	}

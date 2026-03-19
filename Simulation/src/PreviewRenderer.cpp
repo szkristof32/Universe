@@ -14,6 +14,7 @@ PreviewRenderer::PreviewRenderer()
 	m_Buffer->Bind();
 
 	m_VertexArray->AddAttribute(AttributeType::Float3);
+	m_VertexArray->AddAttribute(AttributeType::Float4);
 	m_VertexArray->BakeLayout();
 }
 

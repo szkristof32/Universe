@@ -26,6 +26,7 @@ void PreviewRenderer::Configure(const PreviewRendererConfig& config)
 void PreviewRenderer::BeginFrame()
 {
 	m_Shader->Bind();
+	m_Config.CameraUniformBuffer->Bind();
 }
 
 void PreviewRenderer::EndFrame()
@@ -37,7 +38,6 @@ void PreviewRenderer::DrawPreview(const std::vector<LineSegment>& segments)
 	m_VertexArray->Bind();
 	m_Buffer->Bind();
 	m_Buffer->SetData(Buffer(const_cast<LineSegment*>(segments.data()), segments.size() * sizeof(LineSegment)));
-	m_Config.CameraUniformBuffer->Bind();
 
 	RendererAPIConfiguration& rendererAPIConfig = RendererAPI::GetConfiguration();
 	rendererAPIConfig.LineWidth = 2.0f;

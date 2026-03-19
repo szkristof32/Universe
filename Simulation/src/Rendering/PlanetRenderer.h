@@ -28,6 +28,7 @@ public:
 	void BeginFrame(Camera& camera, const glm::vec2& viewportSize);
 	void EndFrame();
 
+	void Prepare();
 	void DrawPlanet(const CelestialBody& planet);
 
 	uint32_t GetFinalImage() const { return m_Framebuffer->GetColourAttachment(); }

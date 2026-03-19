@@ -18,4 +18,5 @@ void main()
 	float NdotL = max(dot(normal, toLight), 0.1);
 
 	out_colour = pass_input.Colour * NdotL;
+	out_colour.a = 1.0;
 }

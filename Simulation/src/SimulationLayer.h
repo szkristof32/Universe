@@ -3,9 +3,11 @@
 #include <UniverseEngine.h>
 
 #include "CelestialBody.h"
-#include "PlanetRenderer.h"
-#include "PreviewRenderer.h"
 #include "CameraController.h"
+
+#include "Rendering/PlanetRenderer.h"
+#include "Rendering/PreviewRenderer.h"
+#include "Rendering/GridRenderer.h"
 
 #include "Panels/PropertiesPanel.h"
 #include "Panels/BodiesPanel.h"
@@ -36,6 +38,7 @@ private:
 
 	PlanetRenderer m_Renderer;
 	PreviewRenderer m_PreviewRenderer;
+	GridRenderer m_GridRenderer;
 
 	std::vector<CelestialBody> m_Bodies;
 	std::vector<LineSegment> m_PreviewSegments;

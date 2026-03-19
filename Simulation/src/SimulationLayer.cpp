@@ -20,7 +20,8 @@ void SimulationLayer::OnAttach()
 	m_Camera.Projection = glm::perspectiveFov(glm::radians(70.0f), 16.0f / 9.0f, 1.0f, 0.1f, 100.0f);
 	m_Camera.View = glm::translate(glm::mat4(1.0f), { 0.0f, 0.0f, -4.0f });
 
-	m_PreviewRenderer.Configure({ m_Renderer.GetFramebuffer(), m_Renderer.GetCameraUniformBuffer() });
+	m_PreviewRenderer.Configure({ m_Renderer.GetCameraUniformBuffer() });
+	m_GridRenderer.Configure({ m_Renderer.GetCameraUniformBuffer() });
 
 	CelestialBody testBody{};
 	testBody.Name = "Test body";
@@ -109,6 +110,12 @@ void SimulationLayer::OnRender()
 
 	m_Renderer.BeginFrame(m_Camera, m_ViewportSize);
 
+	m_GridRenderer.BeginFrame();
+	m_GridRenderer.DrawGrid();
+	m_GridRenderer.EndFrame();
+
+	m_Renderer.Prepare();
+
 	for (const auto& body : m_Bodies)
 	{
 		m_Renderer.DrawPlanet(body);
@@ -190,7 +197,7 @@ void SimulationLayer::OnUIRender()
 
 void SimulationLayer::RecalculateProjection(float aspectRatio)
 {
-	m_Camera.Projection = glm::perspectiveFov(glm::radians(70.0f), aspectRatio, 1.0f, 0.1f, 1000.0f);
+	m_Camera.Projection = glm::perspectiveFov(glm::radians(70.0f), aspectRatio, 1.0f, 0.1f, 10000.0f);
 }
 
 void SimulationLayer::UpdateVelocity(CelestialBody& body, Timestep delta)

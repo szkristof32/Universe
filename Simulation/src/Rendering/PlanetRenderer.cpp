@@ -39,14 +39,6 @@ void PlanetRenderer::BeginFrame(Camera& camera, const glm::vec2& viewportSize)
 
 	m_Framebuffer->Bind();
 
-	m_Shader->Bind();
-	m_CameraUniformBuffer->Bind();
-	m_PropertiesUniformBuffer->Bind();
-
-	m_PlanetMesh.GetVertexArray()->Bind();
-	m_PlanetMesh.GetVertexBuffer()->Bind();
-	m_PlanetMesh.GetIndexBuffer()->Bind();
-
 	if (camera != m_Camera)
 	{
 		m_Camera = camera;
@@ -55,6 +47,7 @@ void PlanetRenderer::BeginFrame(Camera& camera, const glm::vec2& viewportSize)
 
 	RendererAPIConfiguration& rendererAPIConfig = RendererAPI::GetConfiguration();
 	rendererAPIConfig.EnableDepthTest = true;
+	rendererAPIConfig.EnableBlending = false;
 
 	RendererAPI::Configure();
 }
@@ -63,6 +56,17 @@ void PlanetRenderer::EndFrame()
 {
 	auto window = Application::Get()->GetWindow();
 	m_Framebuffer->Unbind(window->GetWidth(), window->GetHeight());
+}
+
+void PlanetRenderer::Prepare()
+{
+	m_Shader->Bind();
+	m_CameraUniformBuffer->Bind();
+	m_PropertiesUniformBuffer->Bind();
+
+	m_PlanetMesh.GetVertexArray()->Bind();
+	m_PlanetMesh.GetVertexBuffer()->Bind();
+	m_PlanetMesh.GetIndexBuffer()->Bind();
 }
 
 void PlanetRenderer::DrawPlanet(const CelestialBody& planet)

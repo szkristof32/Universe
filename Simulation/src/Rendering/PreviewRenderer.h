@@ -6,7 +6,6 @@
 
 struct PreviewRendererConfig
 {
-	UE::Reference<UE::Framebuffer> RenderTarget;
 	UE::Reference<UE::UniformBuffer> CameraUniformBuffer;
 };
 

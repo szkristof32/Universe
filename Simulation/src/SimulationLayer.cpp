@@ -26,7 +26,7 @@ void SimulationLayer::OnAttach()
 	CelestialBody testBody{};
 	testBody.Name = "Test body";
 	testBody.Position = glm::vec3(0.0f);
-	testBody.Colour = { 0.2f, 0.4f, 0.6f, 1.0f };
+	testBody.Colour = { 0.87f, 0.62f, 0.0f, 1.0f };
 	testBody.Radius = 1.5f;
 	testBody.SurfaceGravity = 300.0f;
 	testBody.Sun = true;

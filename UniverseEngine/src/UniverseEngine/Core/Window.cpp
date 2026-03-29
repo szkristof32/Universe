@@ -41,6 +41,7 @@ namespace UniverseEngine {
 
 		m_Window = window;
 		glfwShowWindow(m_Window);
+		glfwMaximizeWindow(m_Window);
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 
 		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
